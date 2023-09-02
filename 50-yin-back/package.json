@@ -1,0 +1,25 @@
+{
+  "name": "50-yin-back",
+  "version": "1.0.0",
+  "description": "50 yin study, japanese study",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/obf1313/50-yin.git"
+  },
+  "keywords": [
+    "50",
+    "yin",
+    "study",
+    "japanese"
+  ],
+  "author": "obf1313",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/obf1313/50-yin/issues"
+  },
+  "homepage": "https://github.com/obf1313/50-yin#readme"
+}
