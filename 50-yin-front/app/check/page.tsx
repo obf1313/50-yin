@@ -1,10 +1,12 @@
-'use client'
 /**
  * @descriptor 50音抽查卡片
  * @author obf1313
  */
+'use client'
+
 import { useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { PageRoot } from '@/components'
 
 type DisappearType = 'hiragana' | 'katakana' | 'rome'
 
@@ -47,12 +49,16 @@ const Check = () => {
     }
   }
   // 提前结束
-  const end = () => {}
+  const end = () => {
+    // 掉接口
+    router.push('/result')
+  }
   return (
-    <div className="flex flex-col w-screen h-screen">
-      <div className="px-5 py-2 bg-button text-white flex-shrink-0" onClick={end}>
-        提前结束
-      </div>
+    <PageRoot
+      className="flex flex-col w-screen h-screen"
+      headerProps={{
+        title: '提前结束',
+      }}>
       <div className="flex justify-center items-center w-screen p-2 text-cyan-950 font-bold bg-red-100 flex-1">
         <div className="flex h-36">
           <div className="flex justify-center items-center text-9xl mr-4 h-36 w-36 border-2 border-dotted border-gray-500 flex-shrink-0 flex-grow-0">
@@ -76,7 +82,7 @@ const Check = () => {
           记住了
         </button>
       </div>
-    </div>
+    </PageRoot>
   )
 }
 export default Check

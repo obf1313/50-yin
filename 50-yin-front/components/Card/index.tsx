@@ -2,6 +2,7 @@
  * @descriptor 五十音卡片
  * @author obf1313
  */
+'use client'
 import classNames from 'classnames'
 
 export interface ICard {
@@ -21,11 +22,13 @@ interface Props {
   isSelect?: boolean
   /** 选中回调 */
   onSelect?: (item: ICard, index: number) => void
+  /** 错误次数 */
+  errorTimes?: 0 | 1 | 2
   className?: string
 }
 
 const Card = (props: Props) => {
-  const { data, className, index, isSelect = false, onSelect } = props
+  const { data, className, index, isSelect = false, onSelect, errorTimes } = props
   const { hiragana, katakana, rome } = data
 
   return (
@@ -35,10 +38,15 @@ const Card = (props: Props) => {
         className,
         {
           'bg-blue-200 border-blue-400': isSelect,
-          'bg-red-100 border-pink-400': !isSelect,
+          'bg-pink-100 border-pink-400': !isSelect,
+          'bg-green-300 border-green-600': errorTimes === 0,
+          'bg-orange-300 border-orange-600': errorTimes === 1,
+          'bg-red-300 border-red-600': errorTimes === 2,
         }
       )}
-      onClick={() => onSelect?.(data, index)}>
+      onClick={() => {
+        onSelect?.(data, index)
+      }}>
       <div className="text-2xl mr-2">{hiragana}</div>
       <div>
         <div className="text-sm text-right">{katakana}</div>

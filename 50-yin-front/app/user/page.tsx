@@ -4,6 +4,7 @@
  */
 'use client'
 import { useRouter } from 'next/navigation'
+import { PageRoot } from '@/components'
 
 const User = () => {
   const router = useRouter()
@@ -11,7 +12,7 @@ const User = () => {
     router.push('new-study')
   }
   return (
-    <main className="min-h-screen w-screen flex flex-col">
+    <PageRoot className="min-h-screen w-screen flex flex-col">
       <div className="h-20 p-5 bg-slate-950">
         <div>
           <span className="text-white">御坂美琴</span>
@@ -32,7 +33,7 @@ const User = () => {
         className="flex w-screen py-4 justify-center fixed bottom-0 left-0 bg-button text-white tracking-widest">
         开始抽查
       </div>
-    </main>
+    </PageRoot>
   )
 }
 export default User

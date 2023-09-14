@@ -4,6 +4,7 @@
  */
 'use client'
 import { useRouter } from 'next/navigation'
+import { PageRoot } from '@/components'
 
 const NewStudy = () => {
   const router = useRouter()
@@ -16,7 +17,7 @@ const NewStudy = () => {
     router.push('/check')
   }
   return (
-    <main className="min-h-screen w-screen flex flex-col items-center">
+    <PageRoot className="min-h-screen w-screen flex flex-col items-center" headerProps>
       <h1 className="mt-40 text-center font-bold text-2xl">是否有新的学习进程</h1>
       <div className="flex justify-center mt-20">
         <button onClick={toUpdate} className="w-40 py-2 text-button border-2 border-button rounded-sm">
@@ -26,7 +27,7 @@ const NewStudy = () => {
           否
         </button>
       </div>
-    </main>
+    </PageRoot>
   )
 }
 export default NewStudy

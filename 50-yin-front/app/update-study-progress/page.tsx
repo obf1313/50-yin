@@ -5,7 +5,7 @@
 'use client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Card, ICard } from './components'
+import { Card, ICard, PageRoot } from '@/components'
 
 const UpdateStudyProgress = () => {
   const router = useRouter()
@@ -24,7 +24,7 @@ const UpdateStudyProgress = () => {
     }
   }
   return (
-    <div>
+    <PageRoot headerProps>
       <div className="flex justify-center py-3 text-white bg-orange-600">请点击任意元素进行选择</div>
       <div className="flex flex-wrap [&>*:nth-child(5n)]:border-r-0">
         {new Array(50)
@@ -42,7 +42,7 @@ const UpdateStudyProgress = () => {
         onClick={confirmStudyProgress}>
         确认学习进度
       </div>
-    </div>
+    </PageRoot>
   )
 }
 export default UpdateStudyProgress
