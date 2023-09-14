@@ -21,7 +21,7 @@ const User = () => {
       </div>
       <div>
         {new Array(10).fill(0).map((item: number, index: number) => (
-          <div key={index} className="flex justify-between py-2 px-3 bg-blue-100 border-t-2 border-blue-200">
+          <div key={index} className="flex justify-between py-2 px-3 bg-blue-100 border-t-1 border-blue-200">
             <div>2023-09-01 09:20:20</div>
             <div>20%</div>
           </div>
@@ -29,7 +29,7 @@ const User = () => {
       </div>
       <div
         onClick={start}
-        className="flex w-screen py-4 justify-center fixed bottom-0 left-0 bg-blue-600 text-white tracking-widest">
+        className="flex w-screen py-4 justify-center fixed bottom-0 left-0 bg-button text-white tracking-widest">
         开始抽查
       </div>
     </main>

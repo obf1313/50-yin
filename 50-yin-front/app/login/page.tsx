@@ -39,7 +39,7 @@ const Login = () => {
         placeholder="密码"
         className="h-12 mt-2 px-4 rounded-sm"
       />
-      <button onClick={login} className="h-12 mt-10 bg-black text-white rounded-sm tracking-widest">
+      <button onClick={login} className="h-12 mt-10 bg-button text-white rounded-sm tracking-widest">
         登录/注册
       </button>
     </main>
