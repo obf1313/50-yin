@@ -1,7 +1,7 @@
 /**
  * @descriptor 登录页面
  * @author obf1313
-*/
+ */
 'use client'
 import { useState } from 'react'
 import { api } from '@/fetch'
@@ -18,9 +18,20 @@ const Login = () => {
       userName,
       password,
     }
-    router.push('/user')
-    api.post('/login', params).then(data => {
+    api.post('/auth/login', params).then(data => {
       console.log('data', data)
+      router.push('/user')
+    })
+  }
+  // 注册
+  const register = () => {
+    const params = {
+      userName,
+      password,
+    }
+    api.post('/auth/register', params).then(data => {
+      console.log('data', data)
+      router.push('/user')
     })
   }
   return (
