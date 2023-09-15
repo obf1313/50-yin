@@ -19,7 +19,7 @@ AppDataSource.initialize()
         await next()
       } catch (e) {
         ctx.status = e.status || 500
-        ctx.body = { message: e.message }
+        ctx.body = { message: e.message, code: ctx.status }
       }
     })
     // 无需 JWT Token 即可访问
@@ -29,7 +29,7 @@ AppDataSource.initialize()
     app.use(jwt({ secret: JSW_SECRET }).unless({ method: 'GET ' }))
     // 需要 JWT Token 才可访问
     app.use(protectedRouter.routes()).use(protectedRouter.allowedMethods())
-    app.listen(3000)
+    app.listen(8000)
   })
   .catch(e => {
     console.error('Error during Data Source initialization', e)

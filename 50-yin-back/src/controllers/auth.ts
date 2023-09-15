@@ -36,9 +36,10 @@ export default class AuthController {
   // 注册
   public static async register(ctx: Context) {
     const newUser = new User()
-    newUser.userName = 'obf1313'
-    newUser.password = await argon2.hash('1313')
-    newUser.createTime = new Date()
+    // @ts-ignore
+    newUser.userName = ctx.request.body.userName
+    // @ts-ignore
+    newUser.password = await argon2.hash(ctx.request.body.password)
     newUser.lastLoginTime = new Date()
     const user = await User.save(newUser)
     ctx.status = 201
