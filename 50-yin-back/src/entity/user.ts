@@ -1,19 +1,33 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity } from 'typeorm'
+import { Entity, Column, BaseEntity, CreateDateColumn, PrimaryColumn, Generated, OneToMany, OneToOne } from 'typeorm'
+import { CheckRecord } from './check-record'
+import { StudyRecord } from './study-record'
 
 @Entity()
 export class User extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number
+  @PrimaryColumn()
+  @Generated('uuid')
+  id: string
 
-  @Column()
+  @Column({
+    length: 8,
+    unique: true,
+  })
   userName: string
 
-  @Column({ select: false })
+  @Column({
+    length: 16,
+  })
   password: string
 
-  @Column()
+  @CreateDateColumn()
   createTime: Date
 
   @Column()
   lastLoginTime: Date
+
+  @OneToMany(() => CheckRecord, checkRecord => checkRecord.user)
+  checkRecord: CheckRecord[]
+
+  @OneToOne(() => StudyRecord, studyRecord => studyRecord.user)
+  studyRecord: StudyRecord
 }

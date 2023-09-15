@@ -4,12 +4,34 @@
  */
 import { Context } from 'koa'
 import * as argon2 from 'argon2'
+import jwt from 'jsonwebtoken'
+import { JSW_SECRET } from '../constants'
 import { User } from './../entity/user'
+import { UnauthorizedException } from './../exceptions'
 
 export default class AuthController {
   // 登录
   public static async login(ctx: Context) {
-    ctx.body = 'Login Controller'
+    const user = await User.findOne({
+      where: {
+        // @ts-ignore
+        userName: ctx.request.body.userName,
+      },
+      select: {
+        password: true,
+      },
+    })
+    if (!user) {
+      throw new UnauthorizedException('用户名不存在')
+      // @ts-ignore
+    } else if (await argon2.verify(user.password, ctx.request.body.password)) {
+      ctx.status = 200
+      ctx.body = {
+        token: jwt.sign({ id: user.id }, JSW_SECRET),
+      }
+    } else {
+      throw new UnauthorizedException('密码错误')
+    }
   }
   // 注册
   public static async register(ctx: Context) {

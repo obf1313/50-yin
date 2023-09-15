@@ -1,14 +1,19 @@
+/**
+ * @descriptor 路由
+ * @author obf1313
+ */
 import Router from '@koa/router'
 import AuthController from './../controllers/auth'
 import UserController from './../controllers/user'
 
-const router = new Router()
+const unprotectedRouter = new Router()
+const protectedRouter = new Router()
 
 // auth 相关路由
-router.post('/auth/login', AuthController.login)
-router.post('/auth/register', AuthController.register)
+unprotectedRouter.post('/auth/login', AuthController.login)
+unprotectedRouter.post('/auth/register', AuthController.register)
 
 // users 相关路由
-router.get('/user/:id', UserController.showUserDetail)
+protectedRouter.get('/user/:id', UserController.showUserDetail)
 
-export default router
+export { unprotectedRouter, protectedRouter }
