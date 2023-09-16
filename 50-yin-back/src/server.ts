@@ -1,6 +1,6 @@
 import Koa from 'koa'
 import cors from '@koa/cors'
-import bodyParser from 'koa-bodyparser'
+import koaBody from 'koa-body'
 import jwt from 'koa-jwt'
 import 'reflect-metadata'
 import { unprotectedRouter, protectedRouter } from './routes'
@@ -13,7 +13,7 @@ AppDataSource.initialize()
     const app = new Koa()
     app.use(logger())
     app.use(cors())
-    app.use(bodyParser())
+    app.use(koaBody())
     app.use(async (ctx, next) => {
       try {
         await next()

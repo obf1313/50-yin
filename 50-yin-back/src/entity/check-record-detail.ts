@@ -1,3 +1,7 @@
+/**
+ * @descriptor 每次抽查记录详情表
+ * @author obf1313
+ */
 import { BaseEntity, Column, Entity, Generated, ManyToOne, PrimaryColumn } from 'typeorm'
 import { CheckRecord } from './check-record'
 

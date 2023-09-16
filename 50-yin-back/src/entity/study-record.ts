@@ -1,3 +1,7 @@
+/**
+ * @descriptor 用户学习阶段记录表
+ * @author obf1313
+ */
 import { BaseEntity, Column, Entity, Generated, JoinColumn, ManyToOne, OneToOne, PrimaryColumn } from 'typeorm'
 import { User } from './user'
 import { Letter } from './letter'

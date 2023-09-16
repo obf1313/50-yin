@@ -1,4 +1,8 @@
-import { BaseEntity, Column, Entity, Generated, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm'
+/**
+ * @descriptor 五十音 - 列
+ * @author obf1313
+ */
+import { BaseEntity, Column, Entity, Generated, OneToMany, PrimaryColumn } from 'typeorm'
 import { Letter } from './letter'
 
 @Entity()

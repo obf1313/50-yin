@@ -1,4 +1,8 @@
-import { BaseEntity, Column, Entity, Generated, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm'
+/**
+ * @descriptor 每次抽查记录表
+ * @author obf1313
+ */
+import { BaseEntity, Column, CreateDateColumn, Entity, Generated, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm'
 import { User } from './user'
 import { CheckRecordDetail } from './check-record-detail'
 
@@ -8,7 +12,7 @@ export class CheckRecord extends BaseEntity {
   @Generated('uuid')
   id: string
 
-  @Column()
+  @CreateDateColumn()
   startTime: Date
 
   @Column()

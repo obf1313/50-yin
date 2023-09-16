@@ -1,11 +1,14 @@
-import { Entity, Column, BaseEntity, CreateDateColumn, PrimaryColumn, Generated, OneToMany, OneToOne } from 'typeorm'
+/**
+ * @descriptor 五十音 - 用户
+ * @author obf1313
+ */
+import { Entity, Column, BaseEntity, CreateDateColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
 import { CheckRecord } from './check-record'
 import { StudyRecord } from './study-record'
 
 @Entity()
 export class User extends BaseEntity {
-  @PrimaryColumn()
-  @Generated('uuid')
+  @PrimaryGeneratedColumn()
   id: string
 
   @Column({
