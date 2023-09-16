@@ -22,7 +22,7 @@ const Result = () => {
       }}>
       <div className="text-6xl text-cyan-950">完成</div>
       <div className="mt-6 text-xl text-cyan-950">20min 15s</div>
-      <div className="fixed bottom-0 w-screen py-2 bg-button text-white text-center" onClick={review}>
+      <div className="fixed bottom-0 w-screen py-4 bg-button text-white text-center" onClick={review}>
         回顾
       </div>
     </PageRoot>

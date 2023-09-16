@@ -37,11 +37,11 @@ const UpdateStudyProgress = () => {
             <Card key={index} data={item} index={index} isSelect={index <= selectIndex} onSelect={onSelect} />
           ))}
       </div>
-      <div
+      <button
         className="flex w-screen py-4 justify-center bottom-0 left-0 bg-button text-white tracking-widest"
         onClick={confirmStudyProgress}>
         确认学习进度
-      </div>
+      </button>
     </PageRoot>
   )
 }

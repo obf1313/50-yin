@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { api } from '@/fetch'
 import { useRouter } from 'next/navigation'
 import { PageRoot } from '@/components'
+import { UserUtils } from '@/utils/user'
 
 const Login = () => {
   const router = useRouter()
@@ -18,19 +19,9 @@ const Login = () => {
       userName,
       password,
     }
-    api.post('/auth/login', params).then(data => {
-      console.log('data', data)
-      router.push('/user')
-    })
-  }
-  // 注册
-  const register = () => {
-    const params = {
-      userName,
-      password,
-    }
-    api.post('/auth/register', params).then(data => {
-      console.log('data', data)
+    api.post('/auth/login', params).then((data: any) => {
+      // TODO: 麻烦，气死
+      UserUtils.setToken(data.token)
       router.push('/user')
     })
   }

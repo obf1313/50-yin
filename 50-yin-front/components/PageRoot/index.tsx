@@ -17,7 +17,7 @@ const PageRoot = (props: PropsWithChildren<IPageRootProps>) => {
   const headerTransferProps = typeof headerProps === 'boolean' ? {} : headerProps
   return (
     <main
-      className={classNames(className, {
+      className={classNames('overflow-x-hidden', className, {
         'pt-12': headerProps,
       })}>
       {headerProps && <Header {...headerTransferProps} />}
