@@ -7,7 +7,7 @@ import * as argon2 from 'argon2'
 import jwt from 'jsonwebtoken'
 import { JSW_SECRET } from '../constants'
 import { User } from './../entity/user'
-import { UnauthorizedException } from './../exceptions'
+import { BusinessException } from './../exceptions'
 
 export default class AuthController {
   // 登录\注册
@@ -32,7 +32,7 @@ export default class AuthController {
       ctx.status = 201
       ctx.body = {
         token: jwt.sign({ id: user.id }, JSW_SECRET),
-        ...rest,
+        id: user.id,
       }
     } else if (await argon2.verify(user.password, ctx.request.body.password)) {
       ctx.status = 200
@@ -40,7 +40,7 @@ export default class AuthController {
         token: jwt.sign({ id: user.id }, JSW_SECRET),
       }
     } else {
-      throw new UnauthorizedException('密码错误')
+      throw new BusinessException('密码错误')
     }
   }
 }

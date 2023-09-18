@@ -3,6 +3,14 @@ export class BaseException extends Error {
   message: string
 }
 
+export class BusinessException extends BaseException {
+  status: number = 777
+  constructor(msg?: string) {
+    super()
+    this.message = msg || '业务错误'
+  }
+}
+
 export class NotFoundException extends BaseException {
   status = 404
   constructor(msg?: string) {

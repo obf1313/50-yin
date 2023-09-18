@@ -9,12 +9,8 @@ import { NotFoundException } from './../exceptions'
 export default class CheckRecordController {
   public static async getCheckRecordList(ctx: Context) {
     const { userId } = ctx.request.body
-    // TODO: 分页
-    const [list, total] = await CheckRecord.findAndCount({
-      where: {
-        user: userId,
-      },
-    })
+    // TODO: 分页，怎么查对应的
+    const [list, total] = await CheckRecord.findAndCount()
     if (list) {
       ctx.status = 200
       ctx.body = {

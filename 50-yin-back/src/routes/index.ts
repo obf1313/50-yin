@@ -17,7 +17,7 @@ const protectedRouter = new Router()
 unprotectedRouter.post('/auth/login', AuthController.login)
 
 // users 相关路由
-protectedRouter.get('/user/:id', UserController.getUserDetail)
+protectedRouter.get('/user', UserController.getUserDetail)
 
 // check-record 相关路由
 protectedRouter.post('/check-record/list', CheckRecordController.getCheckRecordList)
