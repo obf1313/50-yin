@@ -14,8 +14,7 @@ const User = () => {
   const [recordList, setRecordList] = useState<Array<any>>([])
   // 获取用户信息
   const getUserInfo = () => {
-    const userId = '1'
-    api.get(`/user/${userId}`).then(setUserInfo)
+    api.get(`/user`).then(setUserInfo)
   }
   // 获取抽查记录
   const getRecordList = () => {
@@ -35,7 +34,7 @@ const User = () => {
           <span className="text-white">{userInfo?.userName}</span>
           <span className="ml-1 text-xs text-gray-200"> id: {userInfo?.id}</span>
         </div>
-        <div className="mt-1 text-xs text-gray-400">上次登录时间 {userInfo.lastLoginTime}</div>
+        <div className="mt-1 text-xs text-gray-400">上次登录时间：{userInfo.lastLoginTime}</div>
       </div>
       <Empty isEmpty={recordList.length === 0}>
         {recordList.map((item: any, index: number) => (

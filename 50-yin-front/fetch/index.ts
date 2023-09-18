@@ -17,11 +17,15 @@ tempApi.interceptors.response.use(
   error => {
     if (error.response.status === 401) {
       UserUtils.toLoginPage()
+      Promise.reject(error)
     }
     if (error.response.status === 500) {
       console.log('服务器错误')
+      Promise.reject(error)
     }
-    Promise.reject(error)
+    if (error.response.status === 777) {
+      return Promise.resolve(error.response)
+    }
   }
 )
 

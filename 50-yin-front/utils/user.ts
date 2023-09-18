@@ -15,5 +15,5 @@ export const UserUtils = {
     } else {
       UserUtils.toLoginPage()
     }
-  },
+  }
 }

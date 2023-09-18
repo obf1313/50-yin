@@ -20,8 +20,12 @@ const Login = () => {
       password,
     }
     api.post('/auth/login', params).then((data: any) => {
-      UserUtils.setToken(data.token)
-      router.push('/user')
+      if (data.code === 777) {
+        console.log('密码错误')
+      } else {
+        UserUtils.setToken(data.token)
+        router.push('/user')
+      }
     })
   }
   return (
@@ -29,6 +33,7 @@ const Login = () => {
       <h1 className="mt-24 flex justify-center font-bold text-4xl">50 音</h1>
       <input
         value={userName}
+        maxLength={8}
         onChange={e => setUserName(e.target.value)}
         type="text"
         placeholder="用户名"
@@ -36,6 +41,7 @@ const Login = () => {
       />
       <input
         value={password}
+        maxLength={16}
         onChange={e => setPassword(e.target.value)}
         type="password"
         placeholder="密码"
