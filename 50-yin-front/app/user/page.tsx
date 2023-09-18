@@ -6,7 +6,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Empty, PageRoot } from '@/components'
-import { api } from '@/fetch'
+import api from '@/fetch'
 
 const User = () => {
   const router = useRouter()

@@ -4,7 +4,7 @@
  */
 'use client'
 import { useState } from 'react'
-import { api } from '@/fetch'
+import api from '@/fetch'
 import { useRouter } from 'next/navigation'
 import { PageRoot } from '@/components'
 import { UserUtils } from '@/utils/user'
@@ -20,7 +20,6 @@ const Login = () => {
       password,
     }
     api.post('/auth/login', params).then((data: any) => {
-      // TODO: 麻烦，气死
       UserUtils.setToken(data.token)
       router.push('/user')
     })

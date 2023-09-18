@@ -2,28 +2,21 @@
  * @descriptor 请求
  * @author obf1313
  */
-import axios from 'axios'
+import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
 import { UserUtils } from '@/utils/user'
 
-export const api = axios.create({
+const tempApi = axios.create({
   baseURL: 'http://localhost:8000/',
   timeout: 3000,
-  headers: {
-    // Authorization: UserUtils.getToken(),
-    Authorization:
-      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2OTQ4Njk3NzF9.PkkzkkbfLn0pXC5J1_IdWZCWez5VghQu-tDYqWp3hww',
-  },
 })
 
-api.interceptors.response.use(
+tempApi.interceptors.response.use(
   response => {
-    return Promise.resolve(response.data)
+    return Promise.resolve(response)
   },
   error => {
-    // TODO: 仍然进了 then
     if (error.response.status === 401) {
-      console.log('鉴权失败')
-      // TODO: 跳转到登录页面
+      UserUtils.toLoginPage()
     }
     if (error.response.status === 500) {
       console.log('服务器错误')
@@ -31,3 +24,47 @@ api.interceptors.response.use(
     Promise.reject(error)
   }
 )
+
+/**
+ * 自定义 post 方法
+ * 1. 添加 header: Auth
+ */
+const post = <T = any, R = AxiosResponse<T>, D = any>(
+  url: string,
+  data?: D,
+  config?: AxiosRequestConfig<D>
+): Promise<R> => {
+  return new Promise((resolve, reject) => {
+    tempApi
+      .post(url, data, {
+        ...config,
+        headers: {
+          Authorization: UserUtils.getToken(),
+        },
+      })
+      .then((res: AxiosResponse<any, any>) => resolve(res.data))
+      .catch(e => reject(e))
+  })
+}
+
+/**
+ * 自定义 get 方法
+ * 1. 添加 header: Auth
+ */
+const get = <T = any, R = AxiosResponse<T>, D = any>(url: string, config?: AxiosRequestConfig<D>): Promise<R> => {
+  return new Promise((resolve, reject) => {
+    tempApi
+      .get(url, {
+        ...config,
+        headers: {
+          Authorization: UserUtils.getToken(),
+        },
+      })
+      .then((res: AxiosResponse<any, any>) => resolve(res.data))
+      .catch(e => reject(e))
+  })
+}
+
+const api = { post, get }
+
+export default api
