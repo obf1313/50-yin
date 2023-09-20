@@ -3,8 +3,8 @@
  * @author obf1313
  */
 import { Entity, Column, BaseEntity, CreateDateColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
-import { CheckRecord } from './check-record'
-import { StudyRecord } from './study-record'
+import { CheckRecord } from '@/entity/check-record'
+import { StudyRecord } from '@/entity/study-record'
 
 @Entity()
 export class User extends BaseEntity {

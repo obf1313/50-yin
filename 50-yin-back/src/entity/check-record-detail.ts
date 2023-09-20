@@ -3,7 +3,7 @@
  * @author obf1313
  */
 import { BaseEntity, Column, Entity, Generated, ManyToOne, PrimaryColumn } from 'typeorm'
-import { CheckRecord } from './check-record'
+import { CheckRecord } from '@/entity/check-record'
 
 @Entity()
 export class CheckRecordDetail extends BaseEntity {

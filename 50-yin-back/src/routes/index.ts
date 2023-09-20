@@ -3,12 +3,12 @@
  * @author obf1313
  */
 import Router from '@koa/router'
-import AuthController from './../controllers/auth'
-import UserController from './../controllers/user'
-import CheckRecordController from './../controllers/check-record'
-import LetterController from './../controllers/letter'
-import StudyRecordController from './../controllers/study-record'
-import CheckRecordDetailController from './../controllers/check-record-detail'
+import AuthController from '@/controllers/auth'
+import UserController from '@/controllers/user'
+import CheckRecordController from '@/controllers/check-record'
+import LetterController from '@/controllers/letter'
+import StudyRecordController from '@/controllers/study-record'
+import CheckRecordDetailController from '@/controllers/check-record-detail'
 
 const unprotectedRouter = new Router()
 const protectedRouter = new Router()

@@ -3,8 +3,8 @@
  * @author obf1313
  */
 import { Context } from 'vm'
-import { Letter } from './../entity/letter'
-import { NotFoundException } from './../exceptions'
+import { Letter } from '@/entity/letter'
+import { NotFoundException } from '@/exceptions'
 
 export default class LetterController {
   public static async getLetterList(ctx: Context) {

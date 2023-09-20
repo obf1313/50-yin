@@ -1,3 +1,7 @@
+/**
+ * @descriptor 时间工具函数
+ * @author obf1313
+ */
 import dayjs from 'dayjs'
 
 /**

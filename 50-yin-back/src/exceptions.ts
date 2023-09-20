@@ -1,3 +1,7 @@
+/**
+ * @descriptor 错误处理
+ * @author obf1313
+ */
 export class BaseException extends Error {
   status: number
   message: string

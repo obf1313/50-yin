@@ -5,9 +5,9 @@
 import { Context } from 'koa'
 import * as argon2 from 'argon2'
 import jwt from 'jsonwebtoken'
-import { JSW_SECRET } from '../constants'
-import { User } from './../entity/user'
-import { BusinessException } from './../exceptions'
+import { JSW_SECRET } from '@/constants'
+import { User } from '@/entity/user'
+import { BusinessException } from '@/exceptions'
 
 export default class AuthController {
   // 登录\注册

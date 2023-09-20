@@ -3,10 +3,10 @@ import cors from '@koa/cors'
 import koaBody from 'koa-body'
 import jwt from 'koa-jwt'
 import 'reflect-metadata'
-import { unprotectedRouter, protectedRouter } from './routes'
-import { logger } from './logger'
-import { AppDataSource } from './data-source'
-import { JSW_SECRET } from './constants'
+import { unprotectedRouter, protectedRouter } from '@/routes'
+import { logger } from '@/logger'
+import { AppDataSource } from '@/data-source'
+import { JSW_SECRET } from '@/constants'
 
 AppDataSource.initialize()
   .then(() => {

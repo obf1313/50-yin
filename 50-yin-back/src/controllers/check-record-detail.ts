@@ -3,8 +3,8 @@
  * @author obf1313
  */
 import { Context } from 'koa'
-import { CheckRecordDetail } from './../entity/check-record-detail'
-import { NotFoundException } from './../exceptions'
+import { CheckRecordDetail } from '@/entity/check-record-detail'
+import { NotFoundException } from '@/exceptions'
 
 export default class CheckRecordDetailController {
   public static async updateCheckRecordDetail(ctx: Context) {

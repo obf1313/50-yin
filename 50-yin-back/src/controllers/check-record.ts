@@ -3,8 +3,8 @@
  * @author obf1313
  */
 import { Context } from 'koa'
-import { CheckRecord } from './../entity/check-record'
-import { NotFoundException } from './../exceptions'
+import { CheckRecord } from '@/entity/check-record'
+import { NotFoundException } from '@/exceptions'
 
 export default class CheckRecordController {
   public static async getCheckRecordList(ctx: Context) {

@@ -3,8 +3,8 @@
  * @author obf1313
  */
 import { Context } from 'koa'
-import { StudyRecord } from './../entity/study-record'
-import { NotFoundException } from './../exceptions'
+import { StudyRecord } from '@/entity/study-record'
+import { NotFoundException } from '@/exceptions'
 
 export default class StudyRecordController {
   public static async updateStudyRecord(ctx: Context) {

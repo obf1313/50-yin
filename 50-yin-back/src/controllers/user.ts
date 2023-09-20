@@ -3,10 +3,9 @@
  * @author obf1313
  */
 import { Context } from 'koa'
-// TODO: 为什么别名引入不行
-import { User } from './../entity/user'
-import { NotFoundException } from './../exceptions'
-import { formatTime } from './../utils/date'
+import { User } from '@/entity/user'
+import { NotFoundException } from '@/exceptions'
+import { formatTime } from '@/utils/date'
 
 export default class UserController {
   public static async getUserDetail(ctx: Context) {

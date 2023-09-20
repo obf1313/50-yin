@@ -3,7 +3,7 @@
  * @author obf1313
  */
 import { BaseEntity, Column, Entity, Generated, OneToMany, PrimaryColumn } from 'typeorm'
-import { Letter } from './letter'
+import { Letter } from '@/entity/letter'
 
 @Entity()
 export class Row extends BaseEntity {

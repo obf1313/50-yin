@@ -3,9 +3,9 @@
  * @author obf1313
  */
 import { BaseEntity, Column, Entity, Generated, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm'
-import { Row } from './row'
-import { Col } from './col'
-import { StudyRecord } from './study-record'
+import { Row } from '@/entity/row'
+import { Col } from '@/entity/col'
+import { StudyRecord } from '@/entity/study-record'
 
 @Entity()
 export class Letter extends BaseEntity {
