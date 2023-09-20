@@ -8,6 +8,7 @@ import jwt from 'jsonwebtoken'
 import { JSW_SECRET } from '@/constants'
 import { User } from '@/entity/user'
 import { BusinessException } from '@/exceptions'
+import SecretUtils from '@/utils/secret'
 
 export default class AuthController {
   // 登录\注册
@@ -20,27 +21,30 @@ export default class AuthController {
         password: true,
       },
     })
-    // 用户不存在，直接注册
-    if (!user) {
-      const newUser = new User()
-      newUser.userName = ctx.request.body.userName
-      // TODO: 现在密码是明文传输
-      newUser.password = await argon2.hash(ctx.request.body.password)
-      newUser.lastLoginTime = new Date()
-      const user = await User.save(newUser)
-      const { password, ...rest } = user
-      ctx.status = 201
-      ctx.body = {
-        token: jwt.sign({ id: user.id }, JSW_SECRET),
-        id: user.id,
+    try {
+      const password = SecretUtils.deSecret(ctx.request.body.password)
+      // 用户不存在，直接注册
+      if (!user) {
+        const newUser = new User()
+        newUser.userName = ctx.request.body.userName
+        newUser.password = await argon2.hash(password)
+        newUser.lastLoginTime = new Date()
+        const user = await User.save(newUser)
+        ctx.status = 201
+        ctx.body = {
+          token: jwt.sign({ id: user.id }, JSW_SECRET),
+          id: user.id,
+        }
+      } else if (await argon2.verify(user.password, password)) {
+        ctx.status = 200
+        ctx.body = {
+          token: jwt.sign({ id: user.id }, JSW_SECRET),
+        }
+      } else {
+        throw new BusinessException('密码错误')
       }
-    } else if (await argon2.verify(user.password, ctx.request.body.password)) {
-      ctx.status = 200
-      ctx.body = {
-        token: jwt.sign({ id: user.id }, JSW_SECRET),
-      }
-    } else {
-      throw new BusinessException('密码错误')
+    } catch (e) {
+      console.log('e', e)
     }
   }
 }

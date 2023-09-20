@@ -14,10 +14,10 @@ const Login = () => {
   const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
   // 登录
-  const login = () => {
+  const login = async () => {
     const params = {
       userName,
-      password,
+      password: await UserUtils.secret(password),
     }
     api.post('/auth/login', params).then((data: any) => {
       if (data.code === 777) {

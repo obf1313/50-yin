@@ -5,7 +5,7 @@
 import { Context } from 'koa'
 import { User } from '@/entity/user'
 import { NotFoundException } from '@/exceptions'
-import { formatTime } from '@/utils/date'
+import DateUtils from '@/utils/date'
 
 export default class UserController {
   public static async getUserDetail(ctx: Context) {
@@ -16,7 +16,7 @@ export default class UserController {
       ctx.status = 200
       ctx.body = {
         ...user,
-        lastLoginTime: formatTime(user.lastLoginTime),
+        lastLoginTime: DateUtils.formatTime(user.lastLoginTime),
       }
     } else {
       throw new NotFoundException()

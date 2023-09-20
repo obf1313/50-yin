@@ -33,6 +33,7 @@
     "koa-jwt": "^4.0.4",
     "md5": "^2.3.0",
     "mysql": "^2.18.1",
+    "node-rsa": "^1.1.1",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.3.17"
   },
@@ -44,6 +45,7 @@
     "@types/koa-bodyparser": "^4.3.10",
     "@types/md5": "^2.3.2",
     "@types/node": "^20.6.0",
+    "@types/node-rsa": "^1.1.1",
     "nodemon": "^3.0.1",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",

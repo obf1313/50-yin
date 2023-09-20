@@ -4,14 +4,14 @@
  */
 import dayjs from 'dayjs'
 
-/**
- * 日期格式化
- */
-export const formatDate = (date: Date) => {
-  return dayjs(date).format('YYYY-MM-DD')
+const DateUtils = {
+  /** 日期格式化 */
+  formatDate: (date: Date) => {
+    return dayjs(date).format('YYYY-MM-DD')
+  },
+  /** 日期时间格式化 */
+  formatTime: (date: Date) => {
+    return dayjs(date).format('YYYY-MM-DD HH:mm:ss')
+  },
 }
-
-/** 日期时间格式化 */
-export const formatTime = (date: Date) => {
-  return dayjs(date).format('YYYY-MM-DD HH:mm:ss')
-}
+export default DateUtils
