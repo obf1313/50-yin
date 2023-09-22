@@ -5,16 +5,25 @@
 import { Context } from 'koa'
 import { CheckRecord } from '@/entity/check-record'
 import { NotFoundException } from '@/exceptions'
+import DateUtils from '@/utils/date'
 
 export default class CheckRecordController {
   public static async getCheckRecordList(ctx: Context) {
-    const { userId } = ctx.request.body
-    // TODO: 分页，怎么查对应的
-    const [list, total] = await CheckRecord.findAndCount()
+    const { pageNum, pageSize } = ctx.request.body
+    // 查询分页数据
+    const [list, total] = await CheckRecord.createQueryBuilder('check_record')
+      .where('userId = :userId', { userId: ctx.state.user.id })
+      .skip((pageNum - 1) * pageSize)
+      .take(pageSize)
+      .getManyAndCount()
     if (list) {
+      const returnList = list.map(item => ({
+        ...item,
+        startTime: DateUtils.formatTime(item.startTime),
+      }))
       ctx.status = 200
       ctx.body = {
-        list,
+        list: returnList,
         total,
       }
     } else {
@@ -22,9 +31,9 @@ export default class CheckRecordController {
     }
   }
   public static async createCheckRecordList(ctx: Context) {
-    const { userId } = ctx.request.body
     const newCheckRecord = new CheckRecord()
-    newCheckRecord.user = userId
+    newCheckRecord.user = ctx.state.user.id
+    newCheckRecord.endTime = newCheckRecord.startTime
     const checkRecord = await CheckRecord.save(newCheckRecord)
     // TODO: 需要根据学习进度建立对应的 detail 数据
     ctx.status = 201

@@ -25,8 +25,7 @@ AppDataSource.initialize()
     // 无需 JWT Token 即可访问
     app.use(unprotectedRouter.routes()).use(unprotectedRouter.allowedMethods())
     // 注册 JWT 中间件
-    // GET 不会吗？
-    app.use(jwt({ secret: JSW_SECRET }).unless({ method: 'GET ' }))
+    app.use(jwt({ secret: JSW_SECRET }))
     // 需要 JWT Token 才可访问
     app.use(protectedRouter.routes()).use(protectedRouter.allowedMethods())
     app.listen(8000)

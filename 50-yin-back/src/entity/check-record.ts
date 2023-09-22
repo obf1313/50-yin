@@ -15,10 +15,14 @@ export class CheckRecord extends BaseEntity {
   @CreateDateColumn()
   startTime: Date
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   endTime: Date
 
-  @Column()
+  @Column({
+    default: 0,
+  })
   accuracy: number
 
   @ManyToOne(() => User, user => user.checkRecord)

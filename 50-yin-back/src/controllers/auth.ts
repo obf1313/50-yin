@@ -18,6 +18,7 @@ export default class AuthController {
         userName: ctx.request.body.userName,
       },
       select: {
+        id: true,
         password: true,
       },
     })

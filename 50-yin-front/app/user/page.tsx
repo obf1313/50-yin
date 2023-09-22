@@ -18,10 +18,12 @@ const User = () => {
   }
   // 获取抽查记录
   const getRecordList = () => {
-    api.post('/check-record/list', { userId: '1' }).then((data: any) => setRecordList(data.list))
+    api.post('/check-record/list', { pageNum: 1, pageSize: 10 }).then((data: any) => setRecordList(data.list))
   }
   const start = () => {
-    router.push('new-study')
+    api.post('/check-record/create').then((data: any) => {
+      router.push('new-study')
+    })
   }
   useEffect(() => {
     getUserInfo()
