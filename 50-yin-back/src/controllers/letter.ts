@@ -2,12 +2,12 @@
  * @descriptor 五十音列表
  * @author obf1313
  */
-import { Context } from 'vm'
+import { ParameterizedContext } from 'koa'
 import { Letter } from '@/entity/letter'
 import { NotFoundException } from '@/exceptions'
 
 export default class LetterController {
-  public static async getLetterList(ctx: Context) {
+  public static async getLetterList(ctx: ParameterizedContext) {
     const list = await Letter.find()
     if (list) {
       ctx.status = 200

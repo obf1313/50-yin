@@ -2,13 +2,13 @@
  * @descriptor 抽查记录
  * @author obf1313
  */
-import { Context } from 'koa'
+import { ParameterizedContext } from 'koa'
 import { CheckRecord } from '@/entity/check-record'
 import { NotFoundException } from '@/exceptions'
 import DateUtils from '@/utils/date'
 
 export default class CheckRecordController {
-  public static async getCheckRecordList(ctx: Context) {
+  public static async getCheckRecordList(ctx: ParameterizedContext) {
     const { pageNum, pageSize } = ctx.request.body
     // 查询分页数据
     const [list, total] = await CheckRecord.createQueryBuilder('check_record')
@@ -30,7 +30,7 @@ export default class CheckRecordController {
       throw new NotFoundException()
     }
   }
-  public static async createCheckRecordList(ctx: Context) {
+  public static async createCheckRecordList(ctx: ParameterizedContext) {
     const newCheckRecord = new CheckRecord()
     newCheckRecord.user = ctx.state.user.id
     newCheckRecord.endTime = newCheckRecord.startTime
@@ -41,7 +41,7 @@ export default class CheckRecordController {
       id: checkRecord.id,
     }
   }
-  public static async getCheckRecord(ctx: Context) {
+  public static async getCheckRecord(ctx: ParameterizedContext) {
     const { id } = ctx.params
     const checkRecord = await CheckRecord.findOneBy({
       id,
@@ -51,7 +51,7 @@ export default class CheckRecordController {
       ctx.body = checkRecord
     }
   }
-  public static async getCheckRecordResult(ctx: Context) {
+  public static async getCheckRecordResult(ctx: ParameterizedContext) {
     const { id } = ctx.params
     const checkRecord = await CheckRecord.findOneBy({
       id,

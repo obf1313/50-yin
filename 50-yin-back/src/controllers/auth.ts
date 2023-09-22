@@ -2,17 +2,33 @@
  * @descriptor 权限控制
  * @author obf1313
  */
-import { Context } from 'koa'
+import { ParameterizedContext } from 'koa'
 import * as argon2 from 'argon2'
 import jwt from 'jsonwebtoken'
 import { JSW_SECRET } from '@/constants'
 import { User } from '@/entity/user'
 import { BusinessException } from '@/exceptions'
 import SecretUtils from '@/utils/secret'
+import { IState } from '@/interfaces'
+
+interface ILoginRequest {
+  request: {
+    body: {
+      userName: string
+      password: string
+    }
+  }
+}
+
+interface ILoginResponse {
+  id: string
+  token: string
+}
 
 export default class AuthController {
   // 登录\注册
-  public static async login(ctx: Context) {
+  // TODO: body 定义怎么写
+  public static async login(ctx: ParameterizedContext<IState, ILoginRequest, ILoginResponse>) {
     const user = await User.findOne({
       where: {
         userName: ctx.request.body.userName,
@@ -39,6 +55,7 @@ export default class AuthController {
       } else if (await argon2.verify(user.password, password)) {
         ctx.status = 200
         ctx.body = {
+          id: user.id,
           token: jwt.sign({ id: user.id }, JSW_SECRET),
         }
       } else {

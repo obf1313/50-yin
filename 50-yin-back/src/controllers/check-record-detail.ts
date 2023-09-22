@@ -2,12 +2,12 @@
  * @descriptor 抽查记录详情
  * @author obf1313
  */
-import { Context } from 'koa'
+import { ParameterizedContext } from 'koa'
 import { CheckRecordDetail } from '@/entity/check-record-detail'
 import { NotFoundException } from '@/exceptions'
 
 export default class CheckRecordDetailController {
-  public static async updateCheckRecordDetail(ctx: Context) {
+  public static async updateCheckRecordDetail(ctx: ParameterizedContext) {
     const { id, isRight } = ctx.request.body
     const detail = await CheckRecordDetail.findOneBy({ id })
     if (detail) {

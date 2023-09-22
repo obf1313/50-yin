@@ -2,13 +2,13 @@
  * @descriptor 用户
  * @author obf1313
  */
-import { Context } from 'koa'
+import { ParameterizedContext } from 'koa'
 import { User } from '@/entity/user'
 import { NotFoundException } from '@/exceptions'
 import DateUtils from '@/utils/date'
 
 export default class UserController {
-  public static async getUserDetail(ctx: Context) {
+  public static async getUserDetail(ctx: ParameterizedContext) {
     const user = await User.findOneBy({
       id: ctx.state.user.id,
     })
