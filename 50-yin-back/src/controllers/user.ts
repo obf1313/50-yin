@@ -8,6 +8,7 @@ import DateUtils from '@/utils/date'
 import { Context } from '@/interfaces'
 
 export default class UserController {
+  /** 获取用户详情 */
   public static async getUserDetail(ctx: Context) {
     const { id } = ctx.state.user
     const user = await User.findOneBy({

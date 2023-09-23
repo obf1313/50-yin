@@ -14,6 +14,7 @@ interface ICheckRecordList {
 }
 
 export default class CheckRecordController {
+  /** 获取抽查记录列表 */
   public static async getCheckRecordList(ctx: Context<IPageRequest, ICheckRecordList>) {
     const { pageNum, pageSize } = ctx.request.body
     // 查询分页数据
@@ -36,7 +37,8 @@ export default class CheckRecordController {
       throw new NotFoundException()
     }
   }
-  public static async createCheckRecordList(ctx: Context<undefined, IIdResponse>) {
+  /** 创建抽查记录 */
+  public static async createCheckRecord(ctx: Context<undefined, IIdResponse>) {
     const { id } = ctx.state.user
     const user = await User.findOneBy({ id })
     if (user) {
@@ -53,6 +55,7 @@ export default class CheckRecordController {
       throw new ForbiddenException()
     }
   }
+  /** 获取抽查记录 */
   public static async getCheckRecord(ctx: Context<IIdRequest, CheckRecord>) {
     const { id } = ctx.request.body
     const checkRecord = await CheckRecord.findOneBy({

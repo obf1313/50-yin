@@ -2,7 +2,18 @@
  * @descriptor 用户学习阶段记录表
  * @author obf1313
  */
-import { BaseEntity, Column, Entity, Generated, JoinColumn, ManyToOne, OneToOne, PrimaryColumn } from 'typeorm'
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  Generated,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryColumn,
+  UpdateDateColumn,
+} from 'typeorm'
 import { User } from '@/entity/user'
 import { Letter } from '@/entity/letter'
 
@@ -12,7 +23,7 @@ export class StudyRecord extends BaseEntity {
   @Generated('uuid')
   id: string
 
-  @Column()
+  @UpdateDateColumn()
   studyUpdateTime: Date
 
   @OneToOne(() => User, user => user.studyRecord)

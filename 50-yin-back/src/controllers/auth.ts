@@ -21,7 +21,7 @@ interface ILoginResponse {
 }
 
 export default class AuthController {
-  // 登录\注册
+  /** 登录\注册 */
   public static async login(ctx: Context<ILoginRequest, ILoginResponse>) {
     const { userName, password } = ctx.request.body
     const user = await User.findOne({

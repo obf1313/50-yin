@@ -14,7 +14,7 @@ interface IUpdateStudyRecordRequest {
 
 export default class StudyRecordController {
   /** 更新学习进度 */
-  public static async updateStudyRecord(ctx: Context<IUpdateStudyRecordRequest, StudyRecord>) {
+  public static async updateStudyRecord(ctx: Context<IUpdateStudyRecordRequest, boolean>) {
     const { letterId } = ctx.request.body
     const { id } = ctx.state.user
     const user = await User.findOneBy({ id })
@@ -37,14 +37,14 @@ export default class StudyRecordController {
           newRecord.letter = letter
           await StudyRecord.save(newRecord)
           ctx.status = 200
-          ctx.body = newRecord
+          ctx.body = true
           return
         }
         if (record) {
           record.letter = letter
           await StudyRecord.save(record)
           ctx.status = 200
-          ctx.body = record
+          ctx.body = true
         } else {
           throw new NotFoundException()
         }
