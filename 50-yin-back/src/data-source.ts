@@ -20,5 +20,6 @@ export const AppDataSource = new DataSource({
   database: 'db_50_yin',
   synchronize: true,
   logging: false,
+  charset: 'utf8mb4',
   entities: [User, Row, Col, Letter, CheckRecord, StudyRecord, CheckRecordDetail],
 })

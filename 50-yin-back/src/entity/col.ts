@@ -2,13 +2,12 @@
  * @descriptor 五十音 - 列
  * @author obf1313
  */
-import { BaseEntity, Column, Entity, Generated, OneToMany, PrimaryColumn } from 'typeorm'
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { Letter } from '@/entity/letter'
 
 @Entity()
 export class Col extends BaseEntity {
-  @PrimaryColumn()
-  @Generated('uuid')
+  @PrimaryGeneratedColumn()
   id: string
 
   @Column({

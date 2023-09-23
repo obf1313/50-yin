@@ -2,13 +2,12 @@
  * @descriptor 五十音 - 行
  * @author obf1313
  */
-import { BaseEntity, Column, Entity, Generated, OneToMany, PrimaryColumn } from 'typeorm'
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { Letter } from '@/entity/letter'
 
 @Entity()
 export class Row extends BaseEntity {
-  @PrimaryColumn()
-  @Generated('uuid')
+  @PrimaryGeneratedColumn()
   id: string
 
   @Column({
@@ -29,5 +28,3 @@ export class Row extends BaseEntity {
   @OneToMany(() => Letter, letter => letter.row)
   letter: Letter[]
 }
-
-// insert into row (hiragana, katakana, rome) values ('あ', 'ア', 'a');

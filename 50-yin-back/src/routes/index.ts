@@ -30,6 +30,7 @@ protectedRouter.post('/check-record-detail/update', CheckRecordDetailController.
 
 // letter 相关路由
 protectedRouter.post('/letter/list', LetterController.getLetterList)
+protectedRouter.post('/letter/init', LetterController.init)
 
 // study-record 相关路由
 protectedRouter.post('/study-record/update', StudyRecordController.updateStudyRecord)

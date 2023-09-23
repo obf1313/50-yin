@@ -6,6 +6,7 @@
 import classNames from 'classnames'
 
 export interface ICard {
+  id: number
   /** 平假名 */
   hiragana: string
   /** 片假名 */
@@ -16,19 +17,17 @@ export interface ICard {
 
 interface Props {
   data: ICard
-  /** 索引 */
-  index: number
   /** 是否被选中 */
   isSelect?: boolean
   /** 选中回调 */
-  onSelect?: (item: ICard, index: number) => void
+  onSelect?: (item: ICard) => void
   /** 错误次数 */
   errorTimes?: 0 | 1 | 2
   className?: string
 }
 
 const Card = (props: Props) => {
-  const { data, className, index, isSelect = false, onSelect, errorTimes } = props
+  const { data, className, isSelect = false, onSelect, errorTimes } = props
   const { hiragana, katakana, rome } = data
 
   return (
@@ -45,7 +44,7 @@ const Card = (props: Props) => {
         }
       )}
       onClick={() => {
-        onSelect?.(data, index)
+        onSelect?.(data)
       }}>
       <div className="text-2xl mr-2">{hiragana}</div>
       <div>

@@ -14,7 +14,7 @@ const User = () => {
   const [recordList, setRecordList] = useState<Array<any>>([])
   // 获取用户信息
   const getUserInfo = () => {
-    api.get(`/user`).then(setUserInfo)
+    api.get('/user').then(setUserInfo)
   }
   // 获取抽查记录
   const getRecordList = () => {
