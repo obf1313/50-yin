@@ -21,9 +21,7 @@ const User = () => {
     api.post('/check-record/list', { pageNum: 1, pageSize: 10 }).then((data: any) => setRecordList(data.list))
   }
   const start = () => {
-    api.post('/check-record/create').then((data: any) => {
-      router.push('new-study')
-    })
+    router.push('new-study')
   }
   useEffect(() => {
     getUserInfo()

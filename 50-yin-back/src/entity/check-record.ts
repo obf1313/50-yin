@@ -26,7 +26,7 @@ export class CheckRecord extends BaseEntity {
   accuracy: number
 
   @ManyToOne(() => User, user => user.checkRecord)
-  user: User[]
+  user: User
 
   @OneToMany(() => CheckRecordDetail, checkRecordDetail => checkRecordDetail.checkRecord)
   checkRecordDetail: CheckRecordDetail[]

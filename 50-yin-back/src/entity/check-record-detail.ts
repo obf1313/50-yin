@@ -15,7 +15,7 @@ export class CheckRecordDetail extends BaseEntity {
   isRight: boolean
 
   @ManyToOne(() => CheckRecord, checkRecord => checkRecord.checkRecordDetail)
-  checkRecord: CheckRecord[]
+  checkRecord: CheckRecord
 
   @Column({
     length: 36,

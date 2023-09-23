@@ -20,5 +20,5 @@ export class StudyRecord extends BaseEntity {
   user: User
 
   @ManyToOne(() => Letter, letter => letter.studyRecord)
-  letter: Letter[]
+  letter: Letter
 }

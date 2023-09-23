@@ -5,6 +5,7 @@
 'use client'
 import { useRouter } from 'next/navigation'
 import { PageRoot } from '@/components'
+import api from '@/fetch'
 
 const NewStudy = () => {
   const router = useRouter()
@@ -14,7 +15,9 @@ const NewStudy = () => {
   }
   // 开始抽查
   const start = () => {
-    router.push('/check')
+    api.post('/check-record/create').then((data: any) => {
+      router.push('/check')
+    })
   }
   return (
     <PageRoot className="min-h-screen w-screen flex flex-col items-center" headerProps>

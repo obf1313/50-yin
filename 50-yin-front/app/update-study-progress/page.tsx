@@ -3,26 +3,36 @@
  * @author obf1313
  */
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Card, ICard, PageRoot } from '@/components'
+import api from '@/fetch'
 
 const UpdateStudyProgress = () => {
   const router = useRouter()
+  const [letterList, setLetterList] = useState<Array<ICard>>([])
   const [selectIndex, setSelectIndex] = useState<number>(-1)
   // 选择某一个元素
   const onSelect = (item: ICard, index: number) => {
     setSelectIndex(index)
   }
+  // 获取五十音图
+  const getLetterList = () => {
+    api.post('/letter/list').then((data: any) => setLetterList(data))
+  }
   // 确认学习进度
   const confirmStudyProgress = () => {
     if (selectIndex < 0) {
-      // 提示
-      console.log('请')
     } else {
-      router.push('/check')
+      api.post('/study-record/update', { letterId: '1' }).then(data => {
+        // 成功则返回确认是否有新的学习进度
+        router.push('new-study')
+      })
     }
   }
+  useEffect(() => {
+    getLetterList()
+  }, [])
   return (
     <PageRoot headerProps>
       <div className="flex justify-center py-3 text-white bg-orange-600">请点击任意元素进行选择</div>

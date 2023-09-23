@@ -38,11 +38,10 @@ export default class CheckRecordController {
   }
   public static async createCheckRecordList(ctx: Context<undefined, IIdResponse>) {
     const { id } = ctx.state.user
-    if (id) {
+    const user = await User.findOneBy({ id })
+    if (user) {
       const newCheckRecord = new CheckRecord()
-      // TODO: 不知道这里应该是怎么写
-      // @ts-ignore
-      newCheckRecord.user = id
+      newCheckRecord.user = user
       newCheckRecord.endTime = newCheckRecord.startTime
       const checkRecord = await CheckRecord.save(newCheckRecord)
       // TODO: 需要根据学习进度建立对应的 detail 数据
