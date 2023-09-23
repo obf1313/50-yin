@@ -19,6 +19,6 @@ export const AppDataSource = new DataSource({
   password: 'root',
   database: 'db_50_yin',
   synchronize: true,
-  logging: true,
+  logging: false,
   entities: [User, Row, Col, Letter, CheckRecord, StudyRecord, CheckRecordDetail],
 })

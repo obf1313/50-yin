@@ -19,7 +19,7 @@ AppDataSource.initialize()
         await next()
       } catch (e) {
         ctx.status = e.status || 500
-        ctx.body = { message: e.message, code: ctx.status }
+        ctx.body = { message: e.message || '服务器错误', code: ctx.status }
       }
     })
     // 无需 JWT Token 即可访问

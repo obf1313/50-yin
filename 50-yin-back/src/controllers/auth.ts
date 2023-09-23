@@ -2,22 +2,17 @@
  * @descriptor 权限控制
  * @author obf1313
  */
-import { ParameterizedContext } from 'koa'
 import * as argon2 from 'argon2'
 import jwt from 'jsonwebtoken'
 import { JSW_SECRET } from '@/constants'
 import { User } from '@/entity/user'
 import { BusinessException } from '@/exceptions'
 import SecretUtils from '@/utils/secret'
-import { IState } from '@/interfaces'
+import { Context } from '@/interfaces'
 
 interface ILoginRequest {
-  request: {
-    body: {
-      userName: string
-      password: string
-    }
-  }
+  userName: string
+  password: string
 }
 
 interface ILoginResponse {
@@ -27,11 +22,11 @@ interface ILoginResponse {
 
 export default class AuthController {
   // 登录\注册
-  // TODO: body 定义怎么写
-  public static async login(ctx: ParameterizedContext<IState, ILoginRequest, ILoginResponse>) {
+  public static async login(ctx: Context<ILoginRequest, ILoginResponse>) {
+    const { userName, password } = ctx.request.body
     const user = await User.findOne({
       where: {
-        userName: ctx.request.body.userName,
+        userName,
       },
       select: {
         id: true,
@@ -39,12 +34,12 @@ export default class AuthController {
       },
     })
     try {
-      const password = SecretUtils.deSecret(ctx.request.body.password)
+      const deSecretPassword = SecretUtils.deSecret(password)
       // 用户不存在，直接注册
       if (!user) {
         const newUser = new User()
-        newUser.userName = ctx.request.body.userName
-        newUser.password = await argon2.hash(password)
+        newUser.userName = userName
+        newUser.password = await argon2.hash(deSecretPassword)
         newUser.lastLoginTime = new Date()
         const user = await User.save(newUser)
         ctx.status = 201
@@ -52,7 +47,7 @@ export default class AuthController {
           token: jwt.sign({ id: user.id }, JSW_SECRET),
           id: user.id,
         }
-      } else if (await argon2.verify(user.password, password)) {
+      } else if (await argon2.verify(user.password, deSecretPassword)) {
         ctx.status = 200
         ctx.body = {
           id: user.id,
@@ -62,7 +57,7 @@ export default class AuthController {
         throw new BusinessException('密码错误')
       }
     } catch (e) {
-      console.log('e', e)
+      throw new BusinessException('未知错误')
     }
   }
 }

@@ -2,13 +2,19 @@
  * @descriptor 抽查记录
  * @author obf1313
  */
-import { ParameterizedContext } from 'koa'
 import { CheckRecord } from '@/entity/check-record'
-import { NotFoundException } from '@/exceptions'
+import { ForbiddenException, NotFoundException } from '@/exceptions'
 import DateUtils from '@/utils/date'
+import { Context, IIdRequest, IIdResponse, IPageRequest } from '@/interfaces'
+import { User } from '@/entity/user'
+
+interface ICheckRecordList {
+  list: Array<CheckRecord | { startTime: string }>
+  total: number
+}
 
 export default class CheckRecordController {
-  public static async getCheckRecordList(ctx: ParameterizedContext) {
+  public static async getCheckRecordList(ctx: Context<IPageRequest, ICheckRecordList>) {
     const { pageNum, pageSize } = ctx.request.body
     // 查询分页数据
     const [list, total] = await CheckRecord.createQueryBuilder('check_record')
@@ -30,19 +36,26 @@ export default class CheckRecordController {
       throw new NotFoundException()
     }
   }
-  public static async createCheckRecordList(ctx: ParameterizedContext) {
-    const newCheckRecord = new CheckRecord()
-    newCheckRecord.user = ctx.state.user.id
-    newCheckRecord.endTime = newCheckRecord.startTime
-    const checkRecord = await CheckRecord.save(newCheckRecord)
-    // TODO: 需要根据学习进度建立对应的 detail 数据
-    ctx.status = 201
-    ctx.body = {
-      id: checkRecord.id,
+  public static async createCheckRecordList(ctx: Context<undefined, IIdResponse>) {
+    const { id } = ctx.state.user
+    if (id) {
+      const newCheckRecord = new CheckRecord()
+      // TODO: 不知道这里应该是怎么写
+      // @ts-ignore
+      newCheckRecord.user = id
+      newCheckRecord.endTime = newCheckRecord.startTime
+      const checkRecord = await CheckRecord.save(newCheckRecord)
+      // TODO: 需要根据学习进度建立对应的 detail 数据
+      ctx.status = 201
+      ctx.body = {
+        id: checkRecord.id,
+      }
+    } else {
+      throw new ForbiddenException()
     }
   }
-  public static async getCheckRecord(ctx: ParameterizedContext) {
-    const { id } = ctx.params
+  public static async getCheckRecord(ctx: Context<IIdRequest, CheckRecord>) {
+    const { id } = ctx.request.body
     const checkRecord = await CheckRecord.findOneBy({
       id,
     })
@@ -51,8 +64,8 @@ export default class CheckRecordController {
       ctx.body = checkRecord
     }
   }
-  public static async getCheckRecordResult(ctx: ParameterizedContext) {
-    const { id } = ctx.params
+  public static async getCheckRecordResult(ctx: Context<IIdRequest, CheckRecord>) {
+    const { id } = ctx.request.body
     const checkRecord = await CheckRecord.findOneBy({
       id,
     })
