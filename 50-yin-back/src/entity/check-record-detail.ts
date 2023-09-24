@@ -11,7 +11,9 @@ export class CheckRecordDetail extends BaseEntity {
   @Generated('uuid')
   id: string
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   isRight: boolean
 
   @ManyToOne(() => CheckRecord, checkRecord => checkRecord.checkRecordDetail)

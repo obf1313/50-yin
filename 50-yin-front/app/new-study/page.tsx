@@ -16,6 +16,9 @@ const NewStudy = () => {
   // 开始抽查
   const start = () => {
     api.post('/check-record/create').then((data: any) => {
+      // 先存在 sessionStorage 中
+      const checkRecord = JSON.stringify(data)
+      sessionStorage.setItem('checkRecord', checkRecord)
       router.push('/check')
     })
   }
