@@ -23,8 +23,8 @@ protectedRouter.get('/user', UserController.getUserDetail)
 protectedRouter.post('/check-record/list', CheckRecordController.getCheckRecordList)
 protectedRouter.post('/check-record/create', CheckRecordController.createCheckRecord)
 protectedRouter.post('/check-record/update', CheckRecordController.updateCheckRecord)
-protectedRouter.get('/check-record/:id', CheckRecordController.getCheckRecord)
-protectedRouter.get('/check-record/result/:id', CheckRecordController.getCheckRecordResult)
+protectedRouter.get('/check-record', CheckRecordController.getCheckRecord)
+protectedRouter.get('/check-record/result', CheckRecordController.getCheckRecordResult)
 
 // check-record-detail 相关路由
 protectedRouter.post('/check-record-detail/update', CheckRecordDetailController.updateCheckRecordDetail)

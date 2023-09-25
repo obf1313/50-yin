@@ -3,7 +3,7 @@
  * @author obf1313
  */
 'use client'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { PageRoot } from '@/components'
 import api from '@/fetch'
 import { useEffect, useState } from 'react'
@@ -17,19 +17,20 @@ interface ICheckRecord {
 
 const Result = () => {
   const router = useRouter()
-  // TODO: 怎么取参数
-  const id = ''
+  const id = useSearchParams().get('id')
   const [recordData, setRecordData] = useState<ICheckRecord>()
   const review = () => {
-    router.push('/review')
+    router.push(`/review?id=${id}`)
   }
   // 查询结果
   const getResultDetail = () => {
-    api.get(`/check-record/result/${id}`).then((data: any) => setRecordData(data))
+    api.get(`/check-record/result?id=${id}`).then((data: any) => setRecordData(data))
   }
   useEffect(() => {
-    getResultDetail()
-  }, [])
+    if (id) {
+      getResultDetail()
+    }
+  }, [id])
   return (
     <PageRoot
       className="flex flex-col justify-center items-center h-screen bg-pink-200"

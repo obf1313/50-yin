@@ -23,6 +23,10 @@ const User = () => {
   const start = () => {
     router.push('new-study')
   }
+  // 跳转到结果页
+  const toResult = (id: string) => {
+    router.push(`/review?id=${id}`)
+  }
   useEffect(() => {
     getUserInfo()
     getRecordList()
@@ -38,7 +42,10 @@ const User = () => {
       </div>
       <Empty isEmpty={recordList.length === 0}>
         {recordList.map((item: any, index: number) => (
-          <div key={index} className="flex justify-between py-2 px-3 bg-blue-100 border-t-1 border-blue-200">
+          <div
+            key={index}
+            className="flex justify-between py-2 px-3 bg-blue-100 border-t-1 border-blue-200"
+            onClick={() => toResult(item.id)}>
             <div>{item.startTime}</div>
             <div>{item.accuracy}%</div>
           </div>

@@ -27,7 +27,7 @@ interface ICheckRecordResponse {
 
 interface ICheckRecordResultRequest extends IIdRequest {
   /** 是否获取详情列表数据 */
-  isGetList: boolean
+  isGetList: 0 | 1
 }
 
 export default class CheckRecordController {
@@ -106,7 +106,12 @@ export default class CheckRecordController {
   /** 更新抽查记录时间、正确率 */
   public static async updateCheckRecord(ctx: Context<IIdRequest, boolean>) {
     const { id } = ctx.request.body
-    const checkRecord = await CheckRecord.findOneBy({ id })
+    const checkRecord = await CheckRecord.findOne({
+      where: {
+        id,
+      },
+      relations: ['checkRecordDetail'],
+    })
     if (checkRecord) {
       checkRecord.accuracy = 0
       // 计算正确率
@@ -116,7 +121,7 @@ export default class CheckRecordController {
         checkRecord.checkRecordDetail.length > 0
       ) {
         const rightNum = checkRecord.checkRecordDetail.filter(item => item.isRight).length
-        checkRecord.accuracy = (rightNum / checkRecord.checkRecordDetail.length) * 100
+        checkRecord.accuracy = Math.floor((rightNum / checkRecord.checkRecordDetail.length) * 100)
       }
       checkRecord.endTime = new Date()
       CheckRecord.save(checkRecord)
@@ -139,9 +144,12 @@ export default class CheckRecordController {
   }
   /** 获取抽查结果 */
   public static async getCheckRecordResult(ctx: Context<ICheckRecordResultRequest, CheckRecord>) {
-    const { id, isGetList } = ctx.request.body
-    const checkRecord = await CheckRecord.findOneBy({
-      id,
+    const { id, isGetList } = ctx.query
+    const checkRecord = await CheckRecord.findOne({
+      where: {
+        id,
+      },
+      relations: isGetList ? ['checkRecordDetail'] : [],
     })
     if (checkRecord) {
       ctx.status = 200

@@ -36,8 +36,8 @@ const Card = (props: Props) => {
         'flex justify-center items-center w-1/5 p-2 text-cyan-950 border-b-2 border-r-2 font-bold',
         className,
         {
-          'bg-blue-200 border-blue-400': isSelect,
-          'bg-pink-100 border-pink-400': !isSelect,
+          'bg-blue-200 border-blue-400': isSelect && typeof errorTimes === undefined,
+          'bg-pink-100 border-pink-400': !isSelect && typeof errorTimes === undefined,
           'bg-green-300 border-green-600': errorTimes === 0,
           'bg-orange-300 border-orange-600': errorTimes === 1,
           'bg-red-300 border-red-600': errorTimes === 2,

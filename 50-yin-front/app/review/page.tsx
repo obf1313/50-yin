@@ -4,7 +4,7 @@
  */
 'use client'
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Card, ICard, PageRoot } from '@/components'
 import api from '@/fetch'
 
@@ -16,27 +16,30 @@ interface IRecordDetail {
 
 const Review = () => {
   const router = useRouter()
+  const id = useSearchParams().get('id')
   const [letterList, setLetterList] = useState<Array<ICard>>([])
   const [resultMap, setResultMap] = useState<Map<string, boolean>>(new Map())
-  // TODO: 怎么取参数
-  const id = ''
   // 获取五十音图
   const getLetterList = () => {
     api.post('/letter/list').then((data: any) => setLetterList(data))
   }
   // 查询结果
   const getResultDetail = () => {
-    api.get(`/check-record/result/${id}`).then((data: any) => {
+    api.get(`/check-record/result?id=${id}&isGetList=1`).then((data: any) => {
       const map = new Map<string, boolean>()
-      data.recordDetail.forEach((item: IRecordDetail) => {
+      data.checkRecordDetail?.forEach((item: IRecordDetail) => {
         map.set(item.letterId, item.isRight)
       })
       setResultMap(map)
     })
   }
   useEffect(() => {
+    if (id) {
+      getResultDetail()
+    }
+  }, [id])
+  useEffect(() => {
     getLetterList()
-    getResultDetail()
   }, [])
   return (
     <PageRoot
@@ -48,6 +51,7 @@ const Review = () => {
       }}>
       <div className="flex flex-wrap [&>*:nth-child(5n)]:border-r-0 pb-16">
         {letterList.map((item: ICard, index: number) => (
+          // TODO: 此处显示暂未考虑没学的情况
           <Card key={index} data={item} errorTimes={resultMap.get(item.id.toString()) ? 0 : 1} />
         ))}
       </div>

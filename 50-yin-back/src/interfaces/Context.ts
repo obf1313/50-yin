@@ -3,6 +3,7 @@ import { IState } from './State'
 import { IncomingMessage, ServerResponse } from 'http'
 import * as Cookies from 'cookies'
 import * as accepts from 'accepts'
+import { ParsedUrlQuery } from 'querystring'
 
 interface ExtendableContext<RequestT = unknown> extends BaseContext {
   app: Application
@@ -19,6 +20,7 @@ interface ExtendableContext<RequestT = unknown> extends BaseContext {
    * To bypass Koa's built-in response handling, you may explicitly set `ctx.respond = false;`
    */
   respond?: boolean | undefined
+  query: RequestT & ParsedUrlQuery
 }
 
 export type Context<RequestT = unknown, ResponseBodyT = unknown> = ExtendableContext<RequestT> & {

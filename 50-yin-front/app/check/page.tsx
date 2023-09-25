@@ -63,14 +63,14 @@ const Check = () => {
     } else {
       sessionStorage.removeItem('checkRecord')
       await api.post('/check-record/update', { id: checkRecord?.id })
-      router.push(`/result/${checkRecord?.id}`)
+      router.push(`/result?id=${checkRecord?.id}`)
     }
   }
   // 提前结束
   const end = async () => {
     // 掉接口
     await api.post('/check-record/update', { id: checkRecord?.id })
-    router.push(`/result/${checkRecord?.id}`)
+    router.push(`/result?id=${checkRecord?.id}`)
   }
   useEffect(() => {
     getCheckRecord()

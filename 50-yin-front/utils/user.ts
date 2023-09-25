@@ -3,7 +3,7 @@
 export const UserUtils = {
   // 跳转至登录页
   toLoginPage: () => {
-    window.location.href = '/login'
+    // window.location.href = '/login'
   },
   // 设置 token
   setToken: (token: string) => {
