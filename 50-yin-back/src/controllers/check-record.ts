@@ -25,6 +25,11 @@ interface ICheckRecordResponse {
   }>
 }
 
+interface ICheckRecordResultRequest extends IIdRequest {
+  /** 是否获取详情列表数据 */
+  isGetList: boolean
+}
+
 export default class CheckRecordController {
   /** 获取抽查记录列表 */
   public static async getCheckRecordList(ctx: Context<IPageRequest, ICheckRecordListResponse>) {
@@ -98,6 +103,29 @@ export default class CheckRecordController {
       throw new ForbiddenException()
     }
   }
+  /** 更新抽查记录时间、正确率 */
+  public static async updateCheckRecord(ctx: Context<IIdRequest, boolean>) {
+    const { id } = ctx.request.body
+    const checkRecord = await CheckRecord.findOneBy({ id })
+    if (checkRecord) {
+      checkRecord.accuracy = 0
+      // 计算正确率
+      if (
+        checkRecord.checkRecordDetail &&
+        Array.isArray(checkRecord.checkRecordDetail) &&
+        checkRecord.checkRecordDetail.length > 0
+      ) {
+        const rightNum = checkRecord.checkRecordDetail.filter(item => item.isRight).length
+        checkRecord.accuracy = (rightNum / checkRecord.checkRecordDetail.length) * 100
+      }
+      checkRecord.endTime = new Date()
+      CheckRecord.save(checkRecord)
+      ctx.status = 200
+      ctx.body = true
+    } else {
+      throw new NotFoundException()
+    }
+  }
   /** 获取抽查记录 */
   public static async getCheckRecord(ctx: Context<IIdRequest, CheckRecord>) {
     const { id } = ctx.request.body
@@ -109,16 +137,21 @@ export default class CheckRecordController {
       ctx.body = checkRecord
     }
   }
-  /** 过去抽查结果 */
-  public static async getCheckRecordResult(ctx: Context<IIdRequest, CheckRecord>) {
-    const { id } = ctx.request.body
+  /** 获取抽查结果 */
+  public static async getCheckRecordResult(ctx: Context<ICheckRecordResultRequest, CheckRecord>) {
+    const { id, isGetList } = ctx.request.body
     const checkRecord = await CheckRecord.findOneBy({
       id,
     })
-    // TODO: 需要查询本次测验所有的详情
     if (checkRecord) {
       ctx.status = 200
-      ctx.body = checkRecord
+      if (isGetList) {
+        ctx.body = checkRecord
+      } else {
+        const { checkRecordDetail, ...rest } = checkRecord
+        // @ts-ignore
+        ctx.body = rest
+      }
     }
   }
 }

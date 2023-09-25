@@ -52,24 +52,25 @@ const Check = () => {
     }
   }, [currentIndex])
   // 下一个
-  const next = (type: 'ok' | 'error') => {
+  const next = async (type: 'ok' | 'error') => {
     // 掉接口
     if (currentIndex + 1 < wordList.length) {
-      api.post('/check-record-detail/update', {
+      await api.post('/check-record-detail/update', {
         id: wordList[currentIndex].id,
         isRight: type === 'ok',
       })
       setCurrentIndex(currentIndex + 1)
     } else {
       sessionStorage.removeItem('checkRecord')
-      // 结束
-      router.push('/result')
+      await api.post('/check-record/update', { id: checkRecord?.id })
+      router.push(`/result/${checkRecord?.id}`)
     }
   }
   // 提前结束
-  const end = () => {
+  const end = async () => {
     // 掉接口
-    router.push('/result')
+    await api.post('/check-record/update', { id: checkRecord?.id })
+    router.push(`/result/${checkRecord?.id}`)
   }
   useEffect(() => {
     getCheckRecord()
@@ -79,6 +80,7 @@ const Check = () => {
       className="flex flex-col w-screen h-screen"
       headerProps={{
         title: '提前结束',
+        onBack: end,
       }}>
       <Empty isEmpty={wordList.length === 0}>
         <div className="flex justify-center items-center w-screen p-2 text-cyan-950 font-bold bg-red-100 flex-1">
