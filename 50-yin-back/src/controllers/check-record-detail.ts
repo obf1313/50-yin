@@ -7,15 +7,28 @@ import { NotFoundException } from '@/exceptions'
 import { Context, IIdRequest } from '@/interfaces'
 
 interface IUpdateCheckRecordDetailRequest extends IIdRequest {
-  isRight: boolean
+  currentAccuracy: number
 }
 
 export default class CheckRecordDetailController {
   public static async updateCheckRecordDetail(ctx: Context<IUpdateCheckRecordDetailRequest, CheckRecordDetail>) {
-    const { id, isRight } = ctx.request.body
+    const { id, currentAccuracy } = ctx.request.body
     const detail = await CheckRecordDetail.findOneBy({ id })
     if (detail) {
-      detail.isRight = isRight
+      detail.currentAccuracy = currentAccuracy
+      // TODO: 测试
+      const detailList = await CheckRecordDetail.find({
+        where: {
+          letterId: detail.letterId,
+        },
+      })
+      if (detailList.length > 0) {
+        // (总正确率 + 本次正确率) / 2
+        const totalAccuracy = (detail.currentAccuracy + detail.totalAccuracy) / 2
+        detail.totalAccuracy = totalAccuracy
+      } else {
+        detail.totalAccuracy = 0
+      }
       await CheckRecordDetail.save(detail)
       ctx.status = 200
       ctx.body = detail

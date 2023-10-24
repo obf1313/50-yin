@@ -16,13 +16,16 @@ interface ICheckRecordListResponse {
   total: number
 }
 
+interface ICheckRecordDetail {
+  id: string
+  times: number
+  letterDetail: Letter
+}
+
 interface ICheckRecordResponse {
   id: string
   startTime: string
-  checkRecordDetailList: Array<{
-    id: string
-    letterDetail: Letter
-  }>
+  checkRecordDetailList: Array<ICheckRecordDetail>
 }
 
 interface ICheckRecordResultRequest extends IIdRequest {
@@ -62,6 +65,14 @@ export default class CheckRecordController {
       const newCheckRecord = new CheckRecord()
       newCheckRecord.user = user
       newCheckRecord.endTime = newCheckRecord.startTime
+      // 查询最新一次该用户的 checkRecord
+      const lastCheckRecord = await CheckRecord.findOne({
+        where: {
+          user: {
+            id: user.id,
+          },
+        },
+      })
       const checkRecord = await CheckRecord.save(newCheckRecord)
       const studyRecord = await StudyRecord.findOne({
         where: {
@@ -73,8 +84,37 @@ export default class CheckRecordController {
       })
       if (studyRecord) {
         const letterId = Number(studyRecord.letter.id)
-        // TODO: 需要优化为根据以往的正确率出现不同频次的该音节
-        const checkRecordDetailList = []
+        // 查询最新一次记录对应的所有 detail
+        let recordDetailList: Array<CheckRecordDetail> = []
+        if (lastCheckRecord) {
+          recordDetailList = await CheckRecordDetail.find({
+            where: {
+              checkRecord: {
+                id: lastCheckRecord.id,
+              },
+            },
+          })
+        }
+        // 规则
+        // 0-20: 4 次
+        // 20-50: 3 次
+        // 50-80: 2 次
+        // 80-100: 1 次
+        const getTimes = (letterId: string) => {
+          const accuracy = recordDetailList.find(item => item.letterId === letterId)?.totalAccuracy || 0
+          if (accuracy < 20) {
+            return 4
+          }
+          if (accuracy < 50) {
+            return 3
+          }
+          if (accuracy < 80) {
+            return 2
+          }
+          return 1
+        }
+        const checkRecordDetailList: Array<ICheckRecordDetail> = []
+        const detailList: Array<CheckRecordDetail> = []
         for (let i = 1; i < letterId + 1; i++) {
           const checkRecordDetail = new CheckRecordDetail()
           checkRecordDetail.checkRecord = checkRecord
@@ -82,14 +122,17 @@ export default class CheckRecordController {
           const letter = await Letter.findOneBy({ id: i.toString() })
           if (letter) {
             checkRecordDetail.letterId = letter?.id
-            // TODO: 可优化为 saveAll 吧，这感觉有点慢
-            const newDetail = await CheckRecordDetail.save(checkRecordDetail)
+            detailList.push(checkRecordDetail)
             checkRecordDetailList.push({
-              id: newDetail.id,
+              id: checkRecordDetail.id,
+              times: getTimes(letter.id),
               letterDetail: letter,
             })
           }
         }
+        // TODO: 测试
+        // save 也可以批量插入
+        await CheckRecordDetail.save(detailList)
         ctx.status = 201
         ctx.body = {
           id: checkRecord.id,
@@ -103,7 +146,7 @@ export default class CheckRecordController {
       throw new ForbiddenException()
     }
   }
-  /** 更新抽查记录时间、正确率 */
+  /** 更新抽查记录时间 */
   public static async updateCheckRecord(ctx: Context<IIdRequest, boolean>) {
     const { id } = ctx.request.body
     const checkRecord = await CheckRecord.findOne({
@@ -113,16 +156,6 @@ export default class CheckRecordController {
       relations: ['checkRecordDetail'],
     })
     if (checkRecord) {
-      checkRecord.accuracy = 0
-      // 计算正确率
-      if (
-        checkRecord.checkRecordDetail &&
-        Array.isArray(checkRecord.checkRecordDetail) &&
-        checkRecord.checkRecordDetail.length > 0
-      ) {
-        const rightNum = checkRecord.checkRecordDetail.filter(item => item.isRight).length
-        checkRecord.accuracy = Math.floor((rightNum / checkRecord.checkRecordDetail.length) * 100)
-      }
       checkRecord.endTime = new Date()
       CheckRecord.save(checkRecord)
       ctx.status = 200

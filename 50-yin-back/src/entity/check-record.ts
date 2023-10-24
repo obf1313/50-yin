@@ -12,22 +12,21 @@ export class CheckRecord extends BaseEntity {
   @Generated('uuid')
   id: string
 
+  /** 开始时间 */
   @CreateDateColumn()
   startTime: Date
 
+  /** 结束时间 */
   @Column({
     nullable: true,
   })
   endTime: Date
 
-  @Column({
-    default: 0,
-  })
-  accuracy: number
-
+  /** 用户 */
   @ManyToOne(() => User, user => user.checkRecord)
   user: User
 
+  /** 记录详情 */
   @OneToMany(() => CheckRecordDetail, checkRecordDetail => checkRecordDetail.checkRecord)
   checkRecordDetail: CheckRecordDetail[]
 }
