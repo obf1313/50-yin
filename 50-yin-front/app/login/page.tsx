@@ -9,6 +9,11 @@ import { useRouter } from 'next/navigation'
 import { PageRoot } from '@/components'
 import { UserUtils } from '@/utils/user'
 
+interface ILoginRequest {
+  userName: string
+  password: string
+}
+
 const Login = () => {
   const router = useRouter()
   const [userName, setUserName] = useState('')
@@ -18,8 +23,9 @@ const Login = () => {
     const params = {
       userName,
       password: await UserUtils.secret(password),
+      a: 1,
     }
-    api.post('/auth/login', params).then((data: any) => {
+    api.post<ILoginRequest, null>('/auth/login', params).then((data: any) => {
       if (data.code === 777) {
         console.log('密码错误')
       } else {

@@ -33,11 +33,7 @@ tempApi.interceptors.response.use(
  * 自定义 post 方法
  * 1. 添加 header: Auth
  */
-const post = <T = any, R = AxiosResponse<T>, D = any>(
-  url: string,
-  data?: D,
-  config?: AxiosRequestConfig<D>
-): Promise<R> => {
+const post = <Req, Res>(url: string, data?: Req, config?: AxiosRequestConfig<Req>): Promise<Res> => {
   return new Promise((resolve, reject) => {
     tempApi
       .post(url, data, {
@@ -55,7 +51,7 @@ const post = <T = any, R = AxiosResponse<T>, D = any>(
  * 自定义 get 方法
  * 1. 添加 header: Auth
  */
-const get = <T = any, R = AxiosResponse<T>, D = any>(url: string, config?: AxiosRequestConfig<D>): Promise<R> => {
+const get = <Req, Res>(url: string, config?: AxiosRequestConfig<Req>): Promise<Res> => {
   return new Promise((resolve, reject) => {
     tempApi
       .get(url, {

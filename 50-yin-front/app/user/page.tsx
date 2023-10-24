@@ -8,6 +8,11 @@ import { useRouter } from 'next/navigation'
 import { Empty, PageRoot } from '@/components'
 import api from '@/fetch'
 
+interface IPageRequest {
+  pageNum: number
+  pageSize: number
+}
+
 const User = () => {
   const router = useRouter()
   const [userInfo, setUserInfo] = useState<any>({})
@@ -18,7 +23,9 @@ const User = () => {
   }
   // 获取抽查记录
   const getRecordList = () => {
-    api.post('/check-record/list', { pageNum: 1, pageSize: 10 }).then((data: any) => setRecordList(data.list))
+    api
+      .post<IPageRequest, any>('/check-record/list', { pageNum: 1, pageSize: 10 })
+      .then((data: any) => setRecordList(data.list))
   }
   const start = () => {
     router.push('new-study')

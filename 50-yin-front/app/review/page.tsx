@@ -21,7 +21,7 @@ const Review = () => {
   const [resultMap, setResultMap] = useState<Map<string, boolean>>(new Map())
   // 获取五十音图
   const getLetterList = () => {
-    api.post('/letter/list').then((data: any) => setLetterList(data))
+    api.post<null, Array<ICard>>('/letter/list').then((data: Array<ICard>) => setLetterList(data))
   }
   // 查询结果
   const getResultDetail = () => {

@@ -18,13 +18,13 @@ const UpdateStudyProgress = () => {
   }
   // 获取五十音图
   const getLetterList = () => {
-    api.post('/letter/list').then((data: any) => setLetterList(data))
+    api.post<null, Array<ICard>>('/letter/list').then((data: Array<ICard>) => setLetterList(data))
   }
   // 确认学习进度
   const confirmStudyProgress = () => {
     if (selectId < 0) {
     } else {
-      api.post('/study-record/update', { letterId: selectId }).then(data => {
+      api.post<{ letterId: number }, null>('/study-record/update', { letterId: selectId }).then(() => {
         // 成功则返回确认是否有新的学习进度
         router.push('new-study')
       })

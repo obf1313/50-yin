@@ -8,6 +8,26 @@ import _ from 'lodash'
 import { PageRoot } from '@/components'
 import api from '@/fetch'
 
+interface ILetter {
+  // TODO: 待补充
+  id: string
+  hiragana: string
+  katakana: string
+  rome: string
+}
+
+interface ICheckRecordDetail {
+  id: string
+  times: number
+  letterDetail: ILetter
+}
+
+interface ICheckRecordResponse {
+  id: string
+  startTime: string
+  checkRecordDetailList: Array<ICheckRecordDetail>
+}
+
 const NewStudy = () => {
   const router = useRouter()
   // 更新学习记录
@@ -16,10 +36,9 @@ const NewStudy = () => {
   }
   // 开始抽查
   const start = () => {
-    // TODO: data 的类型定义
-    api.post('/check-record/create').then((data: any) => {
+    api.post<null, ICheckRecordResponse>('/check-record/create').then((data: ICheckRecordResponse) => {
       const newList: Array<any> = []
-      data.forEach((item: any) => {
+      data.checkRecordDetailList.forEach((item: any) => {
         for (let i = 0; i < item.times; i++) {
           newList.push({
             ...item,
@@ -27,8 +46,9 @@ const NewStudy = () => {
           })
         }
       })
+      data.checkRecordDetailList = _.shuffle(newList)
       // 先存在 sessionStorage 中
-      const checkRecord = JSON.stringify(_.shuffle(newList))
+      const checkRecord = JSON.stringify(data)
       sessionStorage.setItem('checkRecord', checkRecord)
       router.push('/check')
     })

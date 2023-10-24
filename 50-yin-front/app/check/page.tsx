@@ -29,6 +29,12 @@ interface ICheckRecord {
   }>
 }
 
+interface IUpdateRequest {
+  id: string
+  isRight: boolean
+  current: number
+}
+
 const Check = () => {
   const router = useRouter()
   const [checkRecord, setCheckRecord] = useState<ICheckRecord>()
@@ -57,7 +63,7 @@ const Check = () => {
   const next = async (type: 'ok' | 'error') => {
     // 掉接口
     if (currentIndex + 1 < wordList.length) {
-      await api.post('/check-record-detail/update', {
+      await api.post<IUpdateRequest, null>('/check-record-detail/update', {
         id: wordList[currentIndex].id,
         isRight: type === 'ok',
         current: wordList[currentIndex].current,
@@ -65,14 +71,14 @@ const Check = () => {
       setCurrentIndex(currentIndex + 1)
     } else {
       sessionStorage.removeItem('checkRecord')
-      await api.post('/check-record/update', { id: checkRecord?.id })
+      await api.post<{ id?: string }, null>('/check-record/update', { id: checkRecord?.id })
       router.push(`/result?id=${checkRecord?.id}`)
     }
   }
   // 提前结束
   const end = async () => {
     // 掉接口
-    await api.post('/check-record/update', { id: checkRecord?.id })
+    await api.post<{ id?: string }, null>('/check-record/update', { id: checkRecord?.id })
     router.push(`/result?id=${checkRecord?.id}`)
   }
   useEffect(() => {
