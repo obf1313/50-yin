@@ -4,6 +4,7 @@
  */
 'use client'
 import { useRouter } from 'next/navigation'
+import _ from 'lodash'
 import { PageRoot } from '@/components'
 import api from '@/fetch'
 
@@ -15,9 +16,19 @@ const NewStudy = () => {
   }
   // 开始抽查
   const start = () => {
+    // TODO: data 的类型定义
     api.post('/check-record/create').then((data: any) => {
+      const newList: Array<any> = []
+      data.forEach((item: any) => {
+        for (let i = 0; i < item.times; i++) {
+          newList.push({
+            ...item,
+            current: i + 1,
+          })
+        }
+      })
       // 先存在 sessionStorage 中
-      const checkRecord = JSON.stringify(data)
+      const checkRecord = JSON.stringify(_.shuffle(newList))
       sessionStorage.setItem('checkRecord', checkRecord)
       router.push('/check')
     })

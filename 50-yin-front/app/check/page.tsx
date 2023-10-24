@@ -23,6 +23,8 @@ interface ICheckRecord {
   startTime: string
   checkRecordDetailList: Array<{
     id: string
+    times: number
+    current: number
     letterDetail: ILetter
   }>
 }
@@ -58,6 +60,7 @@ const Check = () => {
       await api.post('/check-record-detail/update', {
         id: wordList[currentIndex].id,
         isRight: type === 'ok',
+        current: wordList[currentIndex].current,
       })
       setCurrentIndex(currentIndex + 1)
     } else {
