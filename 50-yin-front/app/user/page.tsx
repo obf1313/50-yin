@@ -13,19 +13,42 @@ interface IPageRequest {
   pageSize: number
 }
 
+interface IUserInfo {
+  id: string
+  userName: string
+  password: string
+  createTime: string
+  lastLoginTime: string
+}
+
+interface IPageResponse<T> {
+  list: Array<T>
+  total: number
+}
+
+interface ICheckRecord {
+  id: string
+  startTime: string
+  checkRecordDetailList: Array<{
+    id: string
+    times: number
+    current: number
+  }>
+}
+
 const User = () => {
   const router = useRouter()
-  const [userInfo, setUserInfo] = useState<any>({})
-  const [recordList, setRecordList] = useState<Array<any>>([])
+  const [userInfo, setUserInfo] = useState<IUserInfo>()
+  const [recordList, setRecordList] = useState<Array<ICheckRecord>>([])
   // 获取用户信息
   const getUserInfo = () => {
-    api.get('/user').then(setUserInfo)
+    api.get<null, IUserInfo>('/user').then(setUserInfo)
   }
   // 获取抽查记录
   const getRecordList = () => {
     api
-      .post<IPageRequest, any>('/check-record/list', { pageNum: 1, pageSize: 10 })
-      .then((data: any) => setRecordList(data.list))
+      .post<IPageRequest, IPageResponse<ICheckRecord>>('/check-record/list', { pageNum: 1, pageSize: 10 })
+      .then((data: IPageResponse<ICheckRecord>) => setRecordList(data.list))
   }
   const start = () => {
     router.push('new-study')
@@ -45,16 +68,15 @@ const User = () => {
           <span className="text-white">{userInfo?.userName}</span>
           <span className="ml-1 text-xs text-gray-200"> id: {userInfo?.id}</span>
         </div>
-        <div className="mt-1 text-xs text-gray-400">上次登录时间：{userInfo.lastLoginTime}</div>
+        <div className="mt-1 text-xs text-gray-400">上次登录时间：{userInfo?.lastLoginTime}</div>
       </div>
       <Empty isEmpty={recordList.length === 0}>
-        {recordList.map((item: any, index: number) => (
+        {recordList.map((item: ICheckRecord, index: number) => (
           <div
             key={index}
             className="flex justify-between py-2 px-3 bg-blue-100 border-t-1 border-blue-200"
             onClick={() => toResult(item.id)}>
             <div>{item.startTime}</div>
-            <div>{item.accuracy}%</div>
           </div>
         ))}
       </Empty>

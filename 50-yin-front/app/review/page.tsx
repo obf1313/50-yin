@@ -14,6 +14,10 @@ interface IRecordDetail {
   letterId: string
 }
 
+interface IRecord {
+  checkRecordDetail: Array<IRecordDetail>
+}
+
 const Review = () => {
   const router = useRouter()
   const id = useSearchParams().get('id')
@@ -25,13 +29,16 @@ const Review = () => {
   }
   // 查询结果
   const getResultDetail = () => {
-    api.get(`/check-record/result?id=${id}&isGetList=1`).then((data: any) => {
-      const map = new Map<string, boolean>()
-      data.checkRecordDetail?.forEach((item: IRecordDetail) => {
-        map.set(item.letterId, item.isRight)
+    // TODO: 修改传参后测试
+    api
+      .get<{ id: string; isGetList: number }, IRecord>(`/check-record/result`, { params: { id, isGetList: 1 } })
+      .then((data: IRecord) => {
+        const map = new Map<string, boolean>()
+        data.checkRecordDetail?.forEach((item: IRecordDetail) => {
+          map.set(item.letterId, item.isRight)
+        })
+        setResultMap(map)
       })
-      setResultMap(map)
-    })
   }
   useEffect(() => {
     if (id) {

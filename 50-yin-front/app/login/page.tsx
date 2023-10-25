@@ -14,6 +14,12 @@ interface ILoginRequest {
   password: string
 }
 
+interface ILoginResponse {
+  code: number
+  id: string
+  token: string
+}
+
 const Login = () => {
   const router = useRouter()
   const [userName, setUserName] = useState('')
@@ -23,9 +29,8 @@ const Login = () => {
     const params = {
       userName,
       password: await UserUtils.secret(password),
-      a: 1,
     }
-    api.post<ILoginRequest, null>('/auth/login', params).then((data: any) => {
+    api.post<ILoginRequest, ILoginResponse>('/auth/login', params).then((data: ILoginResponse) => {
       if (data.code === 777) {
         console.log('密码错误')
       } else {

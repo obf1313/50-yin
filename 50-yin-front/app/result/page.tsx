@@ -24,7 +24,10 @@ const Result = () => {
   }
   // 查询结果
   const getResultDetail = () => {
-    api.get(`/check-record/result?id=${id}`).then((data: any) => setRecordData(data))
+    // TODO: 修改传参后测试
+    api
+      .get<{ id: string }, ICheckRecord>(`/check-record/result`, { params: id })
+      .then((data: ICheckRecord) => setRecordData(data))
   }
   useEffect(() => {
     if (id) {

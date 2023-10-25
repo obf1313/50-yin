@@ -42,7 +42,7 @@ const post = <Req, Res>(url: string, data?: Req, config?: AxiosRequestConfig<Req
           Authorization: UserUtils.getToken(),
         },
       })
-      .then((res: AxiosResponse<any, any>) => resolve(res.data))
+      .then((res: AxiosResponse<Res, Req>) => resolve(res.data))
       .catch(e => reject(e))
   })
 }
@@ -60,7 +60,7 @@ const get = <Req, Res>(url: string, config?: AxiosRequestConfig<Req>): Promise<R
           Authorization: UserUtils.getToken(),
         },
       })
-      .then((res: AxiosResponse<any, any>) => resolve(res.data))
+      .then((res: AxiosResponse<Res, Req>) => resolve(res.data))
       .catch(e => reject(e))
   })
 }

@@ -37,8 +37,8 @@ const NewStudy = () => {
   // 开始抽查
   const start = () => {
     api.post<null, ICheckRecordResponse>('/check-record/create').then((data: ICheckRecordResponse) => {
-      const newList: Array<any> = []
-      data.checkRecordDetailList.forEach((item: any) => {
+      const newList: Array<ICheckRecordDetail & { current: number }> = []
+      data.checkRecordDetailList.forEach((item: ICheckRecordDetail) => {
         for (let i = 0; i < item.times; i++) {
           newList.push({
             ...item,
