@@ -5,6 +5,8 @@
 import { Col } from '@/entity/col'
 import { Letter } from '@/entity/letter'
 import { Row } from '@/entity/row'
+import { NotFoundException } from '@/exceptions'
+import { Context } from '@/interfaces'
 
 export default class LetterService {
   // 初始化所有行
@@ -118,6 +120,16 @@ export default class LetterService {
       letter.col = col!
       letter.row = row!
       await Letter.save(letter)
+    }
+  }
+  /** 获取五十音列表 */
+  public static async getLetterList(ctx: Context<undefined, Array<Letter>>) {
+    const list = await Letter.find()
+    if (list) {
+      ctx.status = 200
+      ctx.body = list
+    } else {
+      throw new NotFoundException()
     }
   }
 }
