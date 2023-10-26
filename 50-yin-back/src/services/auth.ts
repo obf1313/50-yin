@@ -8,20 +8,10 @@ import { JSW_SECRET } from '@/constants'
 import { User } from '@/entity/user'
 import { BusinessException } from '@/exceptions'
 import SecretUtils from '@/utils/secret'
-import { Context } from '@/interfaces'
-
-interface ILoginRequest {
-  userName: string
-  password: string
-}
-
-interface ILoginResponse {
-  id: string
-  token: string
-}
+import { Context, ILoginRO, ILoginVO } from '@/interfaces'
 
 export default class AuthService {
-  public static async login(ctx: Context<ILoginRequest, ILoginResponse>) {
+  public static async login(ctx: Context<ILoginRO, ILoginVO>) {
     const { userName, password } = ctx.request.body
     const user = await User.findOne({
       where: {

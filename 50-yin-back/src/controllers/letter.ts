@@ -2,8 +2,8 @@
  * @descriptor 五十音列表
  * @author obf1313
  */
-import { Letter } from '@/entity/letter'
 import { Context } from '@/interfaces'
+import { ILetterVO } from '@/interfaces/letter'
 import LetterService from '@/services/letter'
 
 export default class LetterController {
@@ -16,7 +16,7 @@ export default class LetterController {
     ctx.body = true
   }
   /** 获取五十音列表 */
-  public static async getLetterList(ctx: Context<undefined, Array<Letter>>) {
+  public static async getLetterList(ctx: Context<undefined, Array<ILetterVO>>) {
     LetterService.getLetterList(ctx)
   }
 }

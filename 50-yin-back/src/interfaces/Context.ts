@@ -1,5 +1,5 @@
 import Application, { BaseContext, Response } from 'koa'
-import { IState } from './State'
+import { IState } from './state'
 import { IncomingMessage, ServerResponse } from 'http'
 import * as Cookies from 'cookies'
 import * as accepts from 'accepts'

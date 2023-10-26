@@ -1,8 +1,8 @@
-export interface IIdRequest {
+export interface IIdRO {
   id: string
 }
 
-export interface IPageRequest {
+export interface IPageRO {
   pageNum: number
   pageSize: number
 }

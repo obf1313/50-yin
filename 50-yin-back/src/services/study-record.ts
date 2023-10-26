@@ -6,15 +6,11 @@ import { Letter } from '@/entity/letter'
 import { StudyRecord } from '@/entity/study-record'
 import { User } from '@/entity/user'
 import { NotFoundException } from '@/exceptions'
-import { Context } from '@/interfaces'
-
-interface IUpdateStudyRecordRequest {
-  letterId: string
-}
+import { Context, IUpdateStudyRO } from '@/interfaces'
 
 export default class StudyRecordService {
   /** 更新学习进度 */
-  public static async updateStudyRecord(ctx: Context<IUpdateStudyRecordRequest, boolean>) {
+  public static async updateStudyRecord(ctx: Context<IUpdateStudyRO, boolean>) {
     const { letterId } = ctx.request.body
     const { id } = ctx.state.user
     const user = await User.findOneBy({ id })

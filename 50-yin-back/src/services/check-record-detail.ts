@@ -4,15 +4,10 @@
  */
 import { CheckRecordDetail } from '@/entity/check-record-detail'
 import { NotFoundException } from '@/exceptions'
-import { Context, IIdRequest } from '@/interfaces'
-
-interface IUpdateCheckRecordDetailRequest extends IIdRequest {
-  isRight: number
-  current: number
-}
+import { Context, IUpdateCheckRecordDetailRO, IUpdateCheckRecordDetailVO } from '@/interfaces'
 
 export default class CheckRecordDetailService {
-  public static async updateCheckRecordDetail(ctx: Context<IUpdateCheckRecordDetailRequest, CheckRecordDetail>) {
+  public static async updateCheckRecordDetail(ctx: Context<IUpdateCheckRecordDetailRO, IUpdateCheckRecordDetailVO>) {
     const { id, isRight, current } = ctx.request.body
     const detail = await CheckRecordDetail.findOneBy({ id })
     if (detail) {

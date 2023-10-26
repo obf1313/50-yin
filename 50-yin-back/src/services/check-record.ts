@@ -5,37 +5,24 @@
 import { CheckRecord } from '@/entity/check-record'
 import { ForbiddenException, NotFoundException } from '@/exceptions'
 import DateUtils from '@/utils/date'
-import { Context, IIdRequest, IPageRequest } from '@/interfaces'
+import {
+  Context,
+  ICheckRecordDetail,
+  ICheckRecordWithDetailVO,
+  ICheckRecordResultRO,
+  IIdRO,
+  IPageRO,
+  IPageVO,
+  ICheckRecordVO,
+} from '@/interfaces'
 import { User } from '@/entity/user'
 import { StudyRecord } from '@/entity/study-record'
 import { CheckRecordDetail } from '@/entity/check-record-detail'
 import { Letter } from '@/entity/letter'
 
-interface ICheckRecordListResponse {
-  list: Array<CheckRecord | { startTime: string }>
-  total: number
-}
-
-interface ICheckRecordDetail {
-  id: string
-  times: number
-  letterDetail: Letter
-}
-
-interface ICheckRecordResponse {
-  id: string
-  startTime: string
-  checkRecordDetailList: Array<ICheckRecordDetail>
-}
-
-interface ICheckRecordResultRequest extends IIdRequest {
-  /** 是否获取详情列表数据 */
-  isGetList: 0 | 1
-}
-
 export default class CheckRecordService {
   /** 获取抽查记录列表 */
-  public static async getCheckRecordList(ctx: Context<IPageRequest, ICheckRecordListResponse>) {
+  public static async getCheckRecordList(ctx: Context<IPageRO, IPageVO<CheckRecord | { startTime: string }>>) {
     const { pageNum, pageSize } = ctx.request.body
     // 查询分页数据
     const [list, total] = await CheckRecord.createQueryBuilder('check_record')
@@ -58,7 +45,7 @@ export default class CheckRecordService {
     }
   }
   /** 创建抽查记录 */
-  public static async createCheckRecord(ctx: Context<undefined, ICheckRecordResponse>) {
+  public static async createCheckRecord(ctx: Context<null, ICheckRecordWithDetailVO>) {
     const { id } = ctx.state.user
     const user = await User.findOneBy({ id })
     if (user) {
@@ -147,7 +134,7 @@ export default class CheckRecordService {
     }
   }
   /** 更新抽查记录时间 */
-  public static async updateCheckRecord(ctx: Context<IIdRequest, boolean>) {
+  public static async updateCheckRecord(ctx: Context<IIdRO, boolean>) {
     const { id } = ctx.request.body
     const checkRecord = await CheckRecord.findOne({
       where: {
@@ -165,7 +152,7 @@ export default class CheckRecordService {
     }
   }
   /** 获取抽查记录 */
-  public static async getCheckRecord(ctx: Context<IIdRequest, CheckRecord>) {
+  public static async getCheckRecord(ctx: Context<IIdRO, ICheckRecordVO>) {
     const { id } = ctx.request.body
     const checkRecord = await CheckRecord.findOneBy({
       id,
@@ -176,7 +163,7 @@ export default class CheckRecordService {
     }
   }
   /** 获取抽查结果 */
-  public static async getCheckRecordResult(ctx: Context<ICheckRecordResultRequest, CheckRecord>) {
+  public static async getCheckRecordResult(ctx: Context<ICheckRecordResultRO, ICheckRecordVO>) {
     const { id, isGetList } = ctx.query
     const checkRecord = await CheckRecord.findOne({
       where: {

@@ -6,10 +6,11 @@ import { User } from '@/entity/user'
 import { NotFoundException } from '@/exceptions'
 import DateUtils from '@/utils/date'
 import { Context } from '@/interfaces'
+import { IUserVO } from '@/interfaces/user'
 
 export default class UserService {
   /** 获取用户详情 */
-  public static async getUserDetail(ctx: Context) {
+  public static async getUserDetail(ctx: Context<null, IUserVO>) {
     const { id } = ctx.state.user
     const user = await User.findOneBy({
       id,
