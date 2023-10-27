@@ -6,27 +6,8 @@
 import { useRouter } from 'next/navigation'
 import _ from 'lodash'
 import { PageRoot } from '@/components'
-import api from '@/fetch'
-
-interface ILetter {
-  // TODO: 待补充
-  id: string
-  hiragana: string
-  katakana: string
-  rome: string
-}
-
-interface ICheckRecordDetail {
-  id: string
-  times: number
-  letterDetail: ILetter
-}
-
-interface ICheckRecordResponse {
-  id: string
-  startTime: string
-  checkRecordDetailList: Array<ICheckRecordDetail>
-}
+import { createCheckRecord } from './api'
+import { ICheckRecordDetail, ICheckRecordResponse } from './interface'
 
 const NewStudy = () => {
   const router = useRouter()
@@ -36,7 +17,7 @@ const NewStudy = () => {
   }
   // 开始抽查
   const start = () => {
-    api.post<null, ICheckRecordResponse>('/check-record/create').then((data: ICheckRecordResponse) => {
+    createCheckRecord().then((data: ICheckRecordResponse) => {
       const newList: Array<ICheckRecordDetail & { current: number }> = []
       data.checkRecordDetailList.forEach((item: ICheckRecordDetail) => {
         for (let i = 0; i < item.times; i++) {

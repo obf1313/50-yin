@@ -4,33 +4,23 @@
  */
 'use client'
 import { useState } from 'react'
-import api from '@/fetch'
 import { useRouter } from 'next/navigation'
 import { PageRoot } from '@/components'
 import { UserUtils } from '@/utils/user'
-
-interface ILoginRequest {
-  userName: string
-  password: string
-}
-
-interface ILoginResponse {
-  code: number
-  id: string
-  token: string
-}
+import { login } from './api'
+import { ILoginResponse } from './interface'
 
 const Login = () => {
   const router = useRouter()
   const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
   // 登录
-  const login = async () => {
+  const onLogin = async () => {
     const params = {
       userName,
       password: await UserUtils.secret(password),
     }
-    api.post<ILoginRequest, ILoginResponse>('/auth/login', params).then((data: ILoginResponse) => {
+    login(params).then((data: ILoginResponse) => {
       if (data.code === 777) {
         console.log('密码错误')
       } else {
@@ -58,7 +48,7 @@ const Login = () => {
         placeholder="密码"
         className="h-12 mt-2 px-4 rounded-sm"
       />
-      <button onClick={login} className="h-12 mt-10 bg-button text-white rounded-sm tracking-widest">
+      <button onClick={onLogin} className="h-12 mt-10 bg-button text-white rounded-sm tracking-widest">
         登录/注册
       </button>
     </PageRoot>

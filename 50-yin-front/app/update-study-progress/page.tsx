@@ -6,7 +6,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Card, ICard, PageRoot } from '@/components'
-import api from '@/fetch'
+import { getLetterList, updateCheckRecord } from './api'
 
 const UpdateStudyProgress = () => {
   const router = useRouter()
@@ -16,22 +16,17 @@ const UpdateStudyProgress = () => {
   const onSelect = (item: ICard) => {
     setSelectId(item.id)
   }
-  // 获取五十音图
-  const getLetterList = () => {
-    api.post<null, Array<ICard>>('/letter/list').then((data: Array<ICard>) => setLetterList(data))
-  }
   // 确认学习进度
   const confirmStudyProgress = () => {
-    if (selectId < 0) {
-    } else {
-      api.post<{ letterId: number }, null>('/study-record/update', { letterId: selectId }).then(() => {
+    if (!(selectId < 0)) {
+      updateCheckRecord({ letterId: selectId }).then(() => {
         // 成功则返回确认是否有新的学习进度
         router.push('new-study')
       })
     }
   }
   useEffect(() => {
-    getLetterList()
+    getLetterList().then((data: Array<ICard>) => setLetterList(data))
   }, [])
   return (
     <PageRoot headerProps>

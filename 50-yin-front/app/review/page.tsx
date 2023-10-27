@@ -6,47 +6,32 @@
 import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Card, ICard, PageRoot } from '@/components'
-import api from '@/fetch'
-
-interface IRecordDetail {
-  id: string
-  isRight: boolean
-  letterId: string
-}
-
-interface IRecord {
-  checkRecordDetail: Array<IRecordDetail>
-}
+import { IRecord, IRecordDetail } from './interface'
+import { getCheckRecordResult, getLetterList } from './api'
 
 const Review = () => {
   const router = useRouter()
   const id = useSearchParams().get('id')
   const [letterList, setLetterList] = useState<Array<ICard>>([])
   const [resultMap, setResultMap] = useState<Map<string, boolean>>(new Map())
-  // 获取五十音图
-  const getLetterList = () => {
-    api.post<null, Array<ICard>>('/letter/list').then((data: Array<ICard>) => setLetterList(data))
-  }
   // 查询结果
   const getResultDetail = () => {
-    // TODO: 修改传参后测试
-    api
-      .get<{ id: string; isGetList: number }, IRecord>(`/check-record/result`, { params: { id, isGetList: 1 } })
-      .then((data: IRecord) => {
+    if (id) {
+      // TODO: 修改传参后测试
+      getCheckRecordResult({ id, isGetList: 1 }).then((data: IRecord) => {
         const map = new Map<string, boolean>()
         data.checkRecordDetail?.forEach((item: IRecordDetail) => {
           map.set(item.letterId, item.isRight)
         })
         setResultMap(map)
       })
+    }
   }
   useEffect(() => {
-    if (id) {
-      getResultDetail()
-    }
+    getResultDetail()
   }, [id])
   useEffect(() => {
-    getLetterList()
+    getLetterList().then((data: Array<ICard>) => setLetterList(data))
   }, [])
   return (
     <PageRoot

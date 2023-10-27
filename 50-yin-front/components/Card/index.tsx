@@ -15,7 +15,7 @@ export interface ICard {
   rome: string
 }
 
-interface Props {
+interface ICardProps {
   data: ICard
   /** 是否被选中 */
   isSelect?: boolean
@@ -26,7 +26,7 @@ interface Props {
   className?: string
 }
 
-const Card = (props: Props) => {
+const Card = (props: ICardProps) => {
   const { data, className, isSelect = false, onSelect, errorTimes } = props
   const { hiragana, katakana, rome } = data
 

@@ -5,15 +5,9 @@
 'use client'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { PageRoot } from '@/components'
-import api from '@/fetch'
 import { useEffect, useState } from 'react'
-
-interface ICheckRecord {
-  id: string
-  startTime: string
-  endTime: string
-  accuracy: number
-}
+import { ICheckRecord } from './interface'
+import { getCheckRecordResult } from './api'
 
 const Result = () => {
   const router = useRouter()
@@ -24,15 +18,13 @@ const Result = () => {
   }
   // 查询结果
   const getResultDetail = () => {
-    // TODO: 修改传参后测试
-    api
-      .get<{ id: string }, ICheckRecord>(`/check-record/result`, { params: id })
-      .then((data: ICheckRecord) => setRecordData(data))
+    if (id) {
+      // TODO: 修改传参后测试
+      getCheckRecordResult({ id: id || '' }).then((data: ICheckRecord) => setRecordData(data))
+    }
   }
   useEffect(() => {
-    if (id) {
-      getResultDetail()
-    }
+    getResultDetail()
   }, [id])
   return (
     <PageRoot

@@ -6,50 +6,13 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Empty, PageRoot } from '@/components'
-import api from '@/fetch'
-
-interface IPageRequest {
-  pageNum: number
-  pageSize: number
-}
-
-interface IUserInfo {
-  id: string
-  userName: string
-  password: string
-  createTime: string
-  lastLoginTime: string
-}
-
-interface IPageResponse<T> {
-  list: Array<T>
-  total: number
-}
-
-interface ICheckRecord {
-  id: string
-  startTime: string
-  checkRecordDetailList: Array<{
-    id: string
-    times: number
-    current: number
-  }>
-}
+import { ICheckRecord, IPageResponse, IUserInfo } from './interface'
+import { getRecordList, getUserInfo } from './api'
 
 const User = () => {
   const router = useRouter()
   const [userInfo, setUserInfo] = useState<IUserInfo>()
   const [recordList, setRecordList] = useState<Array<ICheckRecord>>([])
-  // 获取用户信息
-  const getUserInfo = () => {
-    api.get<null, IUserInfo>('/user').then(setUserInfo)
-  }
-  // 获取抽查记录
-  const getRecordList = () => {
-    api
-      .post<IPageRequest, IPageResponse<ICheckRecord>>('/check-record/list', { pageNum: 1, pageSize: 10 })
-      .then((data: IPageResponse<ICheckRecord>) => setRecordList(data.list))
-  }
   const start = () => {
     router.push('new-study')
   }
@@ -58,8 +21,8 @@ const User = () => {
     router.push(`/review?id=${id}`)
   }
   useEffect(() => {
-    getUserInfo()
-    getRecordList()
+    getUserInfo().then(setUserInfo)
+    getRecordList({ pageNum: 1, pageSize: 10 }).then((data: IPageResponse<ICheckRecord>) => setRecordList(data.list))
   }, [])
   return (
     <PageRoot className="min-h-screen w-screen flex flex-col">

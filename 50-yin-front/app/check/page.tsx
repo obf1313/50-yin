@@ -7,33 +7,10 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Empty, PageRoot } from '@/components'
-import api from '@/fetch'
+import { ICheckRecord } from './interface'
+import { updateCheckRecord, updateCheckRecordDetail } from './api'
 
 type DisappearType = 'hiragana' | 'katakana' | 'rome'
-
-interface ILetter {
-  id: string
-  hiragana: string
-  katakana: string
-  rome: string
-}
-
-interface ICheckRecord {
-  id: string
-  startTime: string
-  checkRecordDetailList: Array<{
-    id: string
-    times: number
-    current: number
-    letterDetail: ILetter
-  }>
-}
-
-interface IUpdateRequest {
-  id: string
-  isRight: boolean
-  current: number
-}
 
 const Check = () => {
   const router = useRouter()
@@ -63,7 +40,7 @@ const Check = () => {
   const next = async (type: 'ok' | 'error') => {
     // 掉接口
     if (currentIndex + 1 < wordList.length) {
-      await api.post<IUpdateRequest, null>('/check-record-detail/update', {
+      await updateCheckRecordDetail({
         id: wordList[currentIndex].id,
         isRight: type === 'ok',
         current: wordList[currentIndex].current,
@@ -71,14 +48,13 @@ const Check = () => {
       setCurrentIndex(currentIndex + 1)
     } else {
       sessionStorage.removeItem('checkRecord')
-      await api.post<{ id?: string }, null>('/check-record/update', { id: checkRecord?.id })
+      await updateCheckRecord({ id: checkRecord?.id })
       router.push(`/result?id=${checkRecord?.id}`)
     }
   }
   // 提前结束
   const end = async () => {
     // 掉接口
-    await api.post<{ id?: string }, null>('/check-record/update', { id: checkRecord?.id })
     router.push(`/result?id=${checkRecord?.id}`)
   }
   useEffect(() => {
